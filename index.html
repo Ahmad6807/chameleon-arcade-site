@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#092c2b">
+  <meta name="description" content="Play Chameleon Arcade: pop balloons, outsmart the chameleon, and take on six difficult algorithm-driven jungle games.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Chameleon Arcade — Pop smart. Don't pop last.">
+  <meta property="og:description" content="A playful balloon game plus six ruthless algorithm challenges, from Hex to evolutionary mazes.">
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%23092c2b'/%3E%3Ccircle cx='940' cy='315' r='220' fill='%231c8571'/%3E%3Ctext x='80' y='270' font-family='Arial,sans-serif' font-size='76' font-weight='700' fill='white'%3ECHAMELEON%3C/text%3E%3Ctext x='80' y='360' font-family='Arial,sans-serif' font-size='76' font-weight='700' fill='%23b9f56b'%3EARCADE%3C/text%3E%3C/svg%3E">
+  <meta name="color-scheme" content="dark">
+  <title>Chameleon Arcade — Pop smart. Don't pop last.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d3b35'/%3E%3Cpath d='M15 39c2-14 17-22 30-15 6 3 6 12 0 16-8 5-18 6-30-1Z' fill='%23a5e65d'/%3E%3Ccircle cx='40' cy='27' r='7' fill='%23f7f5d8'/%3E%3Ccircle cx='42' cy='27' r='3' fill='%230d3b35'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f3f6e9;
+      --muted: #a9c3b7;
+      --deep: #071e20;
+      --deep-2: #0a2e2c;
+      --panel: rgba(18, 57, 52, .78);
+      --panel-2: rgba(22, 71, 62, .7);
+      --line: rgba(208, 239, 205, .14);
+      --mint: #baf273;
+      --mint-2: #84d9a2;
+      --coral: #ff9b7f;
+      --gold: #ffcf73;
+      --blue: #86c9ff;
+      --space-1: .45rem;
+      --space-2: .75rem;
+      --space-3: 1rem;
+      --space-4: 1.4rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --radius-sm: 14px;
+      --radius-md: 22px;
+      --radius-lg: 32px;
+      --radius-pill: 999px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .28);
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      --ease-pop: cubic-bezier(.18, .9, .22, 1.25);
+      --content: 1160px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; min-width: 320px; background: var(--deep); color: var(--ink);
+      font: 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      background: radial-gradient(ellipse at 50% 0%, rgba(28, 117, 92, .16), transparent 56%),
+                  linear-gradient(180deg, #092526 0%, #071e20 62%, #07191b 100%);
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--mint); outline-offset: 4px;
+    }
+    .skip-link { position: fixed; z-index: 100; left: 1rem; top: 1rem; transform: translateY(-150%); background: var(--mint); color: #102a23; padding: .7rem 1rem; border-radius: 10px; font-weight: 800; }
+    .skip-link:focus { transform: translateY(0); }
+    .wrap { width: min(calc(100% - 40px), var(--content)); margin-inline: auto; }
+    .eyebrow { margin: 0 0 .65rem; color: var(--mint); font-size: .75rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.08; letter-spacing: -.035em; }
+    h1 { font-size: clamp(2.7rem, 8.5vw, 6.3rem); max-width: 760px; margin-bottom: 1.1rem; }
+    h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: .85rem; }
+    h3 { font-size: 1.2rem; margin-bottom: .55rem; }
+    .muted { color: var(--muted); }
+    .small { font-size: .88rem; }
+    .site-header {
+      position: absolute; z-index: 20; top: 0; left: 0; right: 0; padding: 18px 0;
+      border-bottom: 1px solid rgba(221, 244, 222, .08); background: rgba(5, 27, 29, .28); backdrop-filter: blur(16px);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { display: inline-flex; align-items: center; gap: .7rem; text-decoration: none; font-weight: 900; letter-spacing: -.04em; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 13px; background: linear-gradient(145deg, #c5f780, #60c797); color: #10342e; box-shadow: 0 8px 22px rgba(129, 226, 147, .22); }
+    .brand-mark svg { width: 25px; height: 25px; }
+    .brand-name { font-size: 1.08rem; }
+    .nav-links { display: flex; align-items: center; gap: clamp(.7rem, 2vw, 1.7rem); }
+    .nav-links a { color: #d6e7dc; text-decoration: none; font-size: .91rem; font-weight: 700; transition: color .2s var(--ease); }
+    .nav-links a:hover { color: var(--mint); }
+    .nav-links .nav-cta { background: var(--mint); color: #17332a; padding: .58rem 1rem; border-radius: var(--radius-pill); }
+    .nav-links .nav-cta:hover { color: #17332a; background: #d1ff9d; }
+    .menu-toggle { display: none; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.06); cursor: pointer; }
+    .hero {
+      position: relative; isolation: isolate; min-height: 780px; min-height: max(720px, 100svh); overflow: hidden;
+      display: flex; align-items: center; padding: 112px 0 65px;
+      background: radial-gradient(ellipse at 50% 75%, rgba(29, 105, 76, .55), transparent 54%),
+                  radial-gradient(ellipse at 84% 28%, rgba(36, 97, 83, .3), transparent 30%),
+                  linear-gradient(145deg, #092b2c 4%, #0b3a34 54%, #072325 100%);
+    }
+    .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .11; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E"); }
+    .hero-content { position: relative; z-index: 2; width: min(calc(100% - 40px), var(--content)); margin: auto; display: grid; grid-template-columns: 1fr minmax(350px, .94fr); align-items: center; gap: 1rem; }
+    .hero-copy { position: relative; z-index: 3; max-width: 650px; padding-bottom: 1rem; }
+    .hero-copy h1 span { color: var(--mint); }
+    .hero-copy > p:not(.eyebrow) { max-width: 510px; color: #c4d9ce; font-size: clamp(1rem, 1.7vw, 1.17rem); margin-bottom: 1.55rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 48px; padding: .8rem 1.25rem; border: 1px solid transparent; border-radius: var(--radius-pill); font-weight: 850; cursor: pointer; text-decoration: none; transition: transform .18s var(--ease-pop), box-shadow .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease); }
+    .btn:hover:not(:disabled) { transform: translateY(-3px); }
+    .btn:active:not(:disabled) { transform: translateY(1px) scale(.98); }
+    .btn-primary { background: var(--mint); color: #143129; box-shadow: 0 10px 28px rgba(175, 239, 110, .2); }
+    .btn-primary:hover:not(:disabled) { background: #d1ff9d; box-shadow: 0 14px 35px rgba(175, 239, 110, .28); }
+    .btn-secondary { color: var(--ink); border-color: rgba(231, 250, 225, .24); background: rgba(255,255,255,.055); }
+    .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,.12); border-color: rgba(231,250,225,.42); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .hero-proof { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.4rem; color: #a9c3b7; font-size: .82rem; font-weight: 700; }
+    .hero-proof span { display: inline-flex; align-items: center; gap: .35rem; }
+    .hero-proof b { color: var(--mint); font-size: 1rem; }
+    .hero-art-wrap { position: relative; min-height: 440px; display: grid; place-items: center; cursor: crosshair; }
+    .hero-orbit { position: absolute; width: min(100%, 510px); aspect-ratio: 1; border: 1px solid rgba(196, 246, 191, .12); border-radius: 50%; box-shadow: inset 0 0 60px rgba(105, 216, 149, .04), 0 0 90px rgba(42, 172, 111, .08); }
+    .hero-orbit::before, .hero-orbit::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(196,246,191,.08); inset: 9%; }
+    .hero-orbit::after { inset: 19%; }
+    .glow { position: absolute; width: 76%; height: 70%; border-radius: 50%; background: rgba(77, 205, 126, .17); filter: blur(48px); }
+    .leaf { position: absolute; width: 145px; height: 75px; border-radius: 100% 0 100% 0; background: linear-gradient(135deg, rgba(106, 194, 105, .4), rgba(35, 111, 72, .08)); transform-origin: 0 100%; animation: leafSway 8s ease-in-out infinite alternate; }
+    .leaf::after { content: ""; position: absolute; left: 12%; top: 55%; width: 82%; height: 1px; background: rgba(210, 246, 156, .3); transform: rotate(-25deg); }
+    .leaf-a { left: 2%; bottom: 20%; transform: rotate(-24deg); }
+    .leaf-b { right: -5%; top: 11%; transform: rotate(152deg) scale(.8); animation-delay: -3s; }
+    .leaf-c { right: 2%; bottom: 16%; transform: rotate(172deg) scale(.6); animation-delay: -5s; }
+    .firefly { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #d4ff97; box-shadow: 0 0 17px 5px rgba(202,255,141,.42); animation: firefly 5s ease-in-out infinite; }
+    .f1 { left: 14%; top: 26%; } .f2 { right: 17%; top: 31%; animation-delay: -1.7s; } .f3 { left: 30%; bottom: 17%; animation-delay: -3.4s; }
+    .chameleon-svg { z-index: 1; width: min(94%, 490px); height: auto; overflow: visible; filter: drop-shadow(0 25px 28px rgba(0,0,0,.27)); animation: breathe 5s ease-in-out infinite; }
+    .cham-body { transform-origin: 50% 65%; animation: bodyPulse 5s ease-in-out infinite; }
+    .cham-tail { transform-origin: 132px 239px; animation: tailCurl 7s ease-in-out infinite alternate; }
+    .eye-blink { transform-box: fill-box; transform-origin: center; animation: blink 6.8s infinite; }
+    .pupil { transition: transform .16s var(--ease); }
+    .hero-overlay { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+    #tonguePath { fill: none; stroke: #ff7771; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 8px rgba(255,99,105,.36)); }
+    #tongueTip { fill: #ff8b83; stroke: #ffd0a9; stroke-width: 2; }
+    #impactRing { fill: none; stroke: #f8e991; stroke-width: 3; opacity: 0; }
+    .motion-hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); color: #a8c9b9; font-size: .76rem; white-space: nowrap; display: inline-flex; gap: .45rem; align-items: center; }
+    .motion-hint::before { content: "✦"; color: var(--mint); }
+    .trust-strip { border-block: 1px solid var(--line); background: rgba(8, 37, 36, .82); }
+    .trust-inner { min-height: 70px; display: flex; justify-content: center; flex-wrap: wrap; align-items: center; gap: clamp(1rem, 5vw, 4rem); color: #bfd5c8; font-size: .88rem; font-weight: 750; }
+    .trust-inner span { display: inline-flex; gap: .48rem; align-items: center; }
+    .trust-inner i { color: var(--mint); font-style: normal; }
+    section.content-section { padding: clamp(4rem, 8vw, 7.2rem) 0; }
+    .section-head { max-width: 690px; margin-bottom: 2rem; }
+    .section-head p { color: var(--muted); font-size: 1.04rem; }
+    .game-shell { position: relative; isolation: isolate; padding: clamp(1.2rem, 4vw, 2.8rem); border: 1px solid rgba(210, 244, 212, .16); border-radius: var(--radius-lg); background: linear-gradient(145deg, rgba(17, 61, 55, .88), rgba(12, 43, 44, .92)); box-shadow: var(--shadow); overflow: hidden; }
+    .game-shell::before { content: ""; position: absolute; z-index: -1; width: 450px; height: 450px; right: -175px; top: -230px; border-radius: 50%; background: rgba(158, 226, 93, .08); filter: blur(2px); }
+    .game-topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.35rem; }
+    .game-topline .eyebrow { margin: 0; }
+    .game-badge { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid rgba(183, 241, 126, .24); border-radius: var(--radius-pill); padding: .38rem .72rem; color: var(--mint); background: rgba(180, 242, 115, .06); font-size: .76rem; font-weight: 800; }
+    .setup-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: clamp(1.4rem, 5vw, 4rem); align-items: center; }
+    .setup-copy h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+    .setup-copy > p { color: var(--muted); max-width: 560px; }
+    .rule-note { display: flex; gap: .8rem; align-items: flex-start; padding: .95rem 1rem; border: 1px solid rgba(255, 207, 115, .2); border-radius: 16px; background: rgba(255, 207, 115, .06); color: #e8d7b5; font-size: .9rem; }
+    .rule-note .icon { color: var(--gold); font-size: 1.1rem; line-height: 1.3; }
+    .settings { padding: clamp(1.1rem, 3vw, 1.7rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(3, 26, 27, .35); }
+    .field-label { display: block; margin-bottom: .6rem; color: #e8f2e5; font-weight: 800; font-size: .9rem; }
+    .segmented { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; padding: .32rem; border-radius: 15px; background: rgba(255,255,255,.055); margin-bottom: 1.1rem; }
+    .segment { min-height: 46px; padding: .5rem .65rem; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #b8d0c3; font-size: .86rem; font-weight: 800; cursor: pointer; transition: .2s var(--ease); }
+    .segment[aria-pressed="true"] { background: rgba(186, 242, 115, .13); color: var(--mint); border-color: rgba(186, 242, 115, .24); }
+    .setting-row { margin: .95rem 0; }
+    .setting-row .row-head { display: flex; justify-content: space-between; align-items: center; gap: .8rem; margin-bottom: .45rem; }
+    .number-pill { min-width: 42px; text-align: center; padding: .17rem .6rem; border-radius: var(--radius-pill); color: #18392d; background: var(--mint); font-weight: 900; }
+    input[type="range"] { width: 100%; accent-color: var(--mint); cursor: pointer; }
+    .range-caption { display: flex; justify-content: space-between; color: #8faea0; font-size: .75rem; }
+    .difficulty-row { margin: .95rem 0 1.2rem; }
+    .difficulty-row[hidden] { display: none; }
+    .select-wrap { position: relative; }
+    select { appearance: none; width: 100%; min-height: 47px; padding: .55rem 2.7rem .55rem .9rem; border: 1px solid rgba(210,244,212,.17); border-radius: 13px; background: #0b302e; color: var(--ink); font-weight: 750; cursor: pointer; }
+    .select-wrap::after { content: "⌄"; position: absolute; top: 5px; right: 14px; color: var(--mint); font-size: 1.4rem; pointer-events: none; }
+    .start-btn { width: 100%; margin-top: .2rem; }
+    .game-view[hidden], .setup-view[hidden] { display: none; }
+    .turn-banner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1rem 1.1rem; border: 1px solid rgba(186,242,115,.22); border-left: 5px solid var(--mint); border-radius: 17px; background: rgba(8, 38, 37, .72); transition: border-color .2s, background .2s; }
+    .turn-banner[data-player="2"] { border-left-color: var(--coral); }
+    .turn-status { display: flex; align-items: center; gap: .75rem; font-size: 1.1rem; font-weight: 900; }
+    .turn-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 16px rgba(186,242,115,.65); }
+    .turn-banner[data-player="2"] .turn-dot { background: var(--coral); box-shadow: 0 0 16px rgba(255,155,127,.65); }
+    .turn-sub { color: var(--muted); font-size: .83rem; }
+    .hud { display: grid; grid-template-columns: 1fr minmax(150px, 1.4fr) 1fr; gap: .7rem; margin: .9rem 0 1rem; }
+    .hud-card { min-height: 70px; display: flex; flex-direction: column; justify-content: center; padding: .72rem .9rem; border: 1px solid var(--line); border-radius: 16px; background: rgba(4, 28, 29, .45); text-align: center; }
+    .hud-card .label { color: #9fbbae; font-size: .76rem; font-weight: 750; }
+    .hud-card strong { display: block; color: var(--ink); font-size: 1.45rem; line-height: 1.2; }
+    .hud-card.remaining strong { color: var(--mint); font-size: 1.75rem; }
+    .hud-card.player-two strong { color: var(--coral); }
+    .board-frame { position: relative; min-height: 240px; padding: 1.05rem .65rem; border: 1px dashed rgba(205, 242, 203, .19); border-radius: 21px; background: radial-gradient(ellipse at center, rgba(27, 87, 68, .24), rgba(5, 29, 29, .22)); }
+    .board-hint { margin: 0 0 .65rem; text-align: center; color: #a8c5b5; font-size: .8rem; }
+    .balloon-board { display: flex; align-items: center; align-content: center; justify-content: center; flex-wrap: wrap; gap: .4rem .25rem; min-height: 175px; padding: .4rem .2rem; }
+    .balloon { --hue: 190; --bob: 0s; --scale: 1; position: relative; display: grid; place-items: start center; width: 56px; height: 104px; padding: 0; border: 0; background: transparent; cursor: pointer; transition: transform .22s var(--ease-pop), filter .2s, opacity .2s; animation: balloonFloat 3.6s ease-in-out infinite; animation-delay: var(--bob); transform: scale(var(--scale)); touch-action: manipulation; }
+    .balloon .orb { position: relative; display: block; width: 47px; height: 58px; border-radius: 52% 48% 47% 53% / 48% 50% 50% 52%; background: radial-gradient(ellipse at 29% 22%, rgba(255,255,255,.92) 0 4%, rgba(255,255,255,.35) 8%, transparent 23%), radial-gradient(ellipse at 50% 72%, hsla(var(--hue), 92%, 48%, 1), hsla(var(--hue), 86%, 40%, 1) 68%, hsla(var(--hue), 86%, 30%, 1)); box-shadow: inset -5px -7px 10px rgba(7,20,28,.18), 0 7px 15px hsla(var(--hue),90%,48%,.12); }
+    .balloon .orb::after { content: ""; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid hsla(var(--hue), 83%, 38%, 1); }
+    .balloon .string { width: 1px; height: 30px; margin-top: 3px; background: linear-gradient(rgba(240,245,224,.64), rgba(240,245,224,.12)); transform: rotate(2deg); transform-origin: top; }
+    .balloon:hover:not(.popping) { transform: translateY(-4px) scale(1.07); }
+    .balloon[aria-pressed="true"] { z-index: 2; transform: translateY(-10px) scale(1.08); filter: drop-shadow(0 0 12px hsla(var(--hue),100%,65%,.7)); }
+    .balloon[aria-pressed="true"] .orb { outline: 3px solid #fff5c8; outline-offset: 3px; }
+    .balloon[aria-pressed="true"]::before { content: "✓"; position: absolute; z-index: 2; top: 11px; right: 2px; display: grid; place-items: center; width: 19px; height: 19px; border: 2px solid #11342e; border-radius: 50%; background: var(--mint); color: #123129; font-size: .7rem; font-weight: 1000; }
+    .balloon.popping { pointer-events: none; animation: balloonPop .38s var(--ease-pop) forwards; }
+    .empty-board { width: 100%; color: var(--muted); text-align: center; }
+    .only-one { display: none; margin: .8rem auto 0; max-width: 520px; padding: .72rem 1rem; border: 1px solid rgba(255,155,127,.32); border-radius: 14px; background: rgba(255,155,127,.1); color: #ffd5c6; font-weight: 850; text-align: center; }
+    .only-one.show { display: block; animation: softIn .3s var(--ease); }
+    .controls-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1.1rem; }
+    .quick-select { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; }
+    .quick-label { margin-right: .25rem; color: #a7c1b4; font-size: .82rem; font-weight: 750; }
+    .quick-btn { min-width: 44px; min-height: 44px; border: 1px solid rgba(206,237,205,.19); border-radius: 12px; background: rgba(255,255,255,.05); color: #d7e9dc; font-weight: 900; cursor: pointer; transition: .18s var(--ease); }
+    .quick-btn:hover:not(:disabled) { border-color: rgba(186,242,115,.52); color: var(--mint); background: rgba(186,242,115,.08); }
+    .quick-btn:disabled { opacity: .36; cursor: not-allowed; }
+    .action-group { display: flex; align-items: center; gap: .7rem; }
+    .selection-label { color: #a7c1b4; font-size: .82rem; }
+    .selection-label strong { color: var(--ink); }
+    .game-bottom { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; margin-top: .8rem; }
+    .hint-btn, .text-btn { display: inline-flex; min-height: 44px; align-items: center; gap: .4rem; padding: .45rem .75rem; border: 0; background: transparent; color: #c5dfcd; font-size: .85rem; font-weight: 800; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(197,223,205,.36); text-underline-offset: 3px; }
+    .hint-box { display: none; margin-top: .8rem; padding: .9rem 1rem; border: 1px solid rgba(134,201,255,.24); border-radius: 14px; background: rgba(134,201,255,.07); color: #d3eaff; font-size: .9rem; }
+    .hint-box.show { display: block; }
+    .game-over { position: fixed; z-index: 70; inset: 0; display: none; place-items: center; padding: 1rem; background: rgba(2, 16, 19, .75); backdrop-filter: blur(11px); }
+    .game-over.show { display: grid; animation: fadeIn .24s ease-out; }
+    .modal-card { position: relative; width: min(100%, 520px); padding: clamp(1.6rem, 5vw, 2.5rem); border: 1px solid rgba(213,246,211,.2); border-radius: 28px; background: linear-gradient(145deg, #154c42, #0c302f); box-shadow: 0 30px 100px rgba(0,0,0,.5); text-align: center; overflow: hidden; }
+    .modal-card::before { content: ""; position: absolute; width: 320px; height: 320px; left: 50%; top: -250px; transform: translateX(-50%); border-radius: 50%; background: rgba(186,242,115,.18); filter: blur(12px); }
+    .modal-mascot { position: relative; width: 98px; height: 98px; display: grid; place-items: center; margin: 0 auto 1rem; border-radius: 50%; background: rgba(186,242,115,.11); border: 1px solid rgba(186,242,115,.2); }
+    .modal-mascot svg { width: 78px; }
+    .modal-card h2 { font-size: clamp(2rem, 6vw, 3rem); color: var(--mint); margin-bottom: .65rem; }
+    .modal-card p { color: #c4dbcf; }
+    .modal-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; margin-top: 1.3rem; }
+    .confetti { position: fixed; z-index: 75; top: -14px; width: 9px; height: 14px; border-radius: 3px; pointer-events: none; animation: confettiFall 1.7s ease-in forwards; }
+    .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .info-card { padding: 1.35rem; border: 1px solid var(--line); border-radius: 21px; background: linear-gradient(150deg, rgba(20,65,57,.72), rgba(8,35,36,.8)); }
+    .info-icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 1rem; border-radius: 14px; background: rgba(186,242,115,.1); color: var(--mint); font-size: 1.35rem; }
+    .info-card p { color: var(--muted); margin-bottom: 0; font-size: .93rem; }
+    .strategy-band { margin-top: 1rem; padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid rgba(134,201,255,.2); border-radius: 22px; background: linear-gradient(120deg, rgba(29,77,82,.52), rgba(13,51,49,.58)); }
+    .strategy-band h3 { color: #c8eaff; }
+    .strategy-band p { margin-bottom: 0; color: #c1d9d5; }
+    .strategy-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem; margin: 1rem 0; }
+    .strategy-step { padding: .72rem .55rem; border: 1px solid rgba(192,225,235,.15); border-radius: 14px; background: rgba(3,30,34,.32); text-align: center; }
+    .strategy-step b { display: block; color: var(--mint); font-size: 1.15rem; }
+    .strategy-step span { display: block; color: #b8d0cf; font-size: .75rem; }
+    .about-panel { display: grid; grid-template-columns: .9fr 1.1fr; gap: 2rem; align-items: center; padding: clamp(1.4rem, 4vw, 2.5rem); border: 1px solid var(--line); border-radius: 26px; background: rgba(17, 58, 52, .55); }
+    .about-mark { position: relative; min-height: 230px; display: grid; place-items: center; overflow: hidden; border-radius: 21px; background: radial-gradient(circle at 50% 45%, rgba(144,216,112,.26), transparent 58%), linear-gradient(145deg, #0d3b38, #092729); }
+    .about-mark svg { width: min(86%, 290px); filter: drop-shadow(0 18px 20px rgba(0,0,0,.24)); }
+    .about-copy p { color: var(--muted); }
+    .about-copy p:last-child { margin-bottom: 0; }
+    .policy-section { border-top: 1px solid rgba(210,239,214,.08); }
+    .policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .policy-card { padding: clamp(1.2rem, 3vw, 1.7rem); border: 1px solid var(--line); border-radius: 21px; background: rgba(12,43,42,.52); }
+    .policy-card h3 { color: var(--mint); }
+    .policy-card p, .policy-card li { color: #b4cbbf; font-size: .89rem; }
+    .policy-card ul { padding-left: 1.15rem; margin-bottom: 0; }
+    .policy-card a { color: #cce9a9; text-underline-offset: 3px; }
+    .policy-note { margin-top: 1rem; padding: .85rem 1rem; border-radius: 14px; background: rgba(255,207,115,.07); color: #e8d7b5; font-size: .83rem; }
+    .site-footer { padding: 2rem 0 6rem; border-top: 1px solid rgba(210,239,214,.1); background: rgba(4, 23, 24, .65); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .footer-links a { color: #a9c3b7; text-decoration: none; font-size: .86rem; font-weight: 750; }
+    .footer-links a:hover { color: var(--mint); }
+    .footer-copy { margin: .75rem 0 0; color: #78998d; font-size: .78rem; }
+    .mute-control { position: fixed; z-index: 30; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); display: inline-flex; align-items: center; gap: .5rem; min-height: 48px; padding: .55rem .9rem; border: 1px solid rgba(208,239,205,.21); border-radius: var(--radius-pill); background: rgba(8, 36, 35, .88); color: #dcebdd; box-shadow: 0 10px 30px rgba(0,0,0,.25); backdrop-filter: blur(12px); font-size: .82rem; font-weight: 800; cursor: pointer; }
+    .mute-control:hover { border-color: rgba(186,242,115,.46); }
+    .mute-icon { font-size: 1rem; color: var(--mint); }
+    .sr-only { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }
+    @keyframes breathe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @keyframes bodyPulse { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.018,.99); } }
+    @keyframes tailCurl { from { transform: rotate(-2deg); } to { transform: rotate(3deg); } }
+    @keyframes blink { 0%, 46%, 49%, 78%, 81%, 100% { transform: scaleY(1); } 47.5%, 79.5% { transform: scaleY(.08); } }
+    @keyframes leafSway { from { filter: brightness(.82); } to { filter: brightness(1.18); } }
+    @keyframes firefly { 0%,100% { opacity: .24; transform: translate(0,0) scale(.8); } 50% { opacity: .9; transform: translate(9px,-15px) scale(1.2); } }
+    @keyframes balloonFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+    @keyframes balloonPop { 0% { transform: scale(1); opacity: 1; } 22% { transform: scale(1.14,.82); } 48% { transform: scale(.84,1.12); opacity: .95; } 100% { transform: scale(.05); opacity: 0; } }
+    @keyframes softIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes confettiFall { 0% { transform: translateY(-10px) rotate(0); opacity: 1; } 100% { transform: translateY(105vh) rotate(630deg); opacity: 0; } }
+    @media (max-width: 840px) {
+      .hero { min-height: 900px; min-height: max(860px, 100svh); align-items: start; }
+      .hero-content { grid-template-columns: 1fr; gap: .2rem; }
+      .hero-copy { padding-top: 2rem; text-align: center; margin-inline: auto; }
+      .hero-copy h1, .hero-copy > p:not(.eyebrow) { margin-inline: auto; }
+      .hero-actions, .hero-proof { justify-content: center; }
+      .hero-art-wrap { min-height: 380px; margin-top: -1rem; }
+      .hero-orbit { width: min(94%, 410px); }
+      .chameleon-svg { width: min(86%, 390px); }
+      .setup-grid { grid-template-columns: 1fr; }
+      .content-grid { grid-template-columns: 1fr 1fr; }
+      .info-card:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+      .wrap { width: min(calc(100% - 28px), var(--content)); }
+      .site-header { padding: 12px 0; }
+      .nav-links { display: none; position: absolute; top: 63px; right: 14px; width: min(250px, calc(100vw - 28px)); padding: .7rem; border: 1px solid var(--line); border-radius: 18px; background: rgba(7,31,32,.97); box-shadow: var(--shadow); flex-direction: column; align-items: stretch; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: .7rem .8rem; }
+      .nav-links .nav-cta { text-align: center; }
+      .menu-toggle { display: grid; place-items: center; color: var(--ink); font-size: 1.2rem; }
+      .hero { min-height: 870px; min-height: max(830px, 100svh); padding-top: 85px; }
+      .hero-copy { padding-top: 1.5rem; }
+      .hero-copy h1 { font-size: clamp(2.7rem, 13vw, 4.5rem); }
+      .hero-art-wrap { min-height: 330px; margin-top: -1.25rem; }
+      .leaf { width: 92px; height: 50px; }
+      .motion-hint { bottom: 0; }
+      .trust-inner { justify-content: flex-start; gap: .7rem 1.1rem; padding-block: .9rem; font-size: .78rem; }
+      section.content-section { padding: 4rem 0; }
+      .game-shell { border-radius: 24px; }
+      .game-topline { align-items: flex-start; }
+      .hud { grid-template-columns: 1fr 1.2fr 1fr; gap: .4rem; }
+      .hud-card { min-height: 64px; padding: .55rem .35rem; }
+      .hud-card .label { font-size: .66rem; }
+      .hud-card strong { font-size: 1.17rem; }
+      .hud-card.remaining strong { font-size: 1.5rem; }
+      .board-frame { min-height: 220px; padding-inline: .35rem; }
+      .balloon-board { min-height: 165px; gap: .2rem .02rem; }
+      .balloon { width: 48px; height: 94px; }
+      .balloon .orb { width: 41px; height: 52px; }
+      .controls-row { align-items: stretch; }
+      .quick-select { justify-content: center; width: 100%; }
+      .action-group { width: 100%; justify-content: space-between; }
+      .action-group .btn { min-width: 120px; }
+      .content-grid, .policy-grid { grid-template-columns: 1fr; }
+      .info-card:last-child { grid-column: auto; }
+      .strategy-steps { grid-template-columns: repeat(3,1fr); }
+      .about-panel { grid-template-columns: 1fr; gap: 1.3rem; }
+      .about-mark { min-height: 180px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-links { gap: .55rem 1rem; }
+    }
+    @media (max-width: 380px) {
+      .balloon { width: 43px; }
+      .balloon .orb { width: 37px; height: 49px; }
+      .game-shell { padding: 1rem .8rem; }
+      .btn { padding-inline: 1rem; }
+      .hero-proof { gap: .55rem; font-size: .75rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto!important; animation-duration: .01ms!important; animation-iteration-count: 1!important; transition-duration: .01ms!important; }
+      .chameleon-svg, .cham-body, .cham-tail, .eye-blink, .leaf, .firefly, .balloon { animation: none!important; }
+    }
+    /* UI/UX Pro Max pass: retro-arcade details layered onto the original jungle illustration. */
+    :root {
+      --ink: #f4f8ec;
+      --muted: #b7cec2;
+      --deep: #081b27;
+      --deep-2: #0b2d35;
+      --panel: rgba(16, 48, 59, .88);
+      --panel-2: rgba(20, 67, 71, .78);
+      --line: rgba(195, 237, 214, .18);
+      --mint: #c7f36d;
+      --mint-2: #83d9a7;
+      --coral: #ff8b78;
+      --gold: #ffd47a;
+      --blue: #86caff;
+      --radius-sm: 14px;
+      --radius-md: 22px;
+      --radius-lg: 30px;
+      --shadow: 0 24px 76px rgba(0, 0, 0, .34);
+    }
+    body::before {
+      background:
+        radial-gradient(ellipse at 82% 8%, rgba(36, 128, 128, .16), transparent 34%),
+        radial-gradient(ellipse at 10% 38%, rgba(54, 146, 101, .13), transparent 38%),
+        linear-gradient(180deg, #081b27 0%, #09262c 58%, #07191f 100%);
+    }
+    .site-header {
+      border-bottom-color: rgba(199, 243, 109, .12);
+      background: linear-gradient(180deg, rgba(5, 24, 33, .88), rgba(5, 24, 33, .48));
+    }
+    .brand-mark { border-radius: 12px; }
+    .eyebrow, .game-badge, .hud-card .label, .quick-label, .range-caption, .motion-hint {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .07em;
+    }
+    .eyebrow { font-size: .72rem; }
+    .hero {
+      background:
+        radial-gradient(ellipse at 72% 62%, rgba(47, 147, 101, .36), transparent 43%),
+        radial-gradient(ellipse at 15% 12%, rgba(34, 109, 126, .2), transparent 35%),
+        linear-gradient(138deg, #081b27 0%, #0b3437 55%, #102a38 100%);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .19;
+      background-image: linear-gradient(rgba(191, 237, 202, .18) 1px, transparent 1px), linear-gradient(90deg, rgba(191, 237, 202, .18) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+    }
+    .hero-copy h1 { text-wrap: balance; }
+    .hero-copy h1 span { color: var(--mint); text-shadow: 0 0 38px rgba(199, 243, 109, .13); }
+    .hero-proof { gap: 1.15rem; }
+    .hero-proof b { color: var(--gold); }
+    .hero-orbit { border-style: dashed; border-color: rgba(199, 243, 109, .19); box-shadow: inset 0 0 80px rgba(105, 216, 149, .055), 0 0 100px rgba(42, 172, 111, .1); }
+    .hero-orbit::before, .hero-orbit::after { border-style: dotted; border-color: rgba(199, 243, 109, .12); }
+    .hero-art-wrap { isolation: isolate; }
+    .hero-art-wrap:focus-visible { outline: 3px solid var(--mint); outline-offset: 8px; border-radius: 48%; }
+    .hero-token {
+      position: absolute;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: .72rem;
+      min-height: 56px;
+      padding: .65rem .9rem;
+      border: 1px solid rgba(206, 241, 196, .25);
+      border-radius: 16px;
+      background: rgba(8, 31, 36, .82);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .24);
+      backdrop-filter: blur(12px);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .hero-token--strategy { top: 17%; left: 1%; transform: rotate(-5deg); }
+    .hero-token--round { right: 0; bottom: 18%; transform: rotate(4deg); }
+    .token-value { color: var(--mint); font: 900 1.03rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: -.05em; }
+    .token-live { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 4px rgba(255, 139, 120, .12), 0 0 16px rgba(255, 139, 120, .5); }
+    .token-copy { display: grid; gap: .18rem; }
+    .token-copy b { font-size: .76rem; line-height: 1.2; text-transform: uppercase; letter-spacing: .055em; }
+    .token-copy small { color: var(--muted); font-size: .69rem; line-height: 1.2; }
+    .motion-hint { font-size: .7rem; }
+    .trust-strip { border-color: rgba(199, 243, 109, .16); background: rgba(7, 30, 37, .9); }
+    .trust-inner { color: #c5d9cc; }
+    .trust-inner i { color: var(--gold); }
+    .section-head { max-width: 720px; }
+    .section-head h2 { text-wrap: balance; }
+    .game-shell {
+      border-color: rgba(199, 243, 109, .22);
+      background: linear-gradient(145deg, rgba(16, 52, 59, .96), rgba(9, 35, 43, .97));
+    }
+    .game-shell::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      z-index: -1;
+      border: 1px solid rgba(195, 237, 214, .045);
+      border-radius: calc(var(--radius-lg) - 8px);
+      pointer-events: none;
+    }
+    .game-badge { border-color: rgba(199, 243, 109, .3); background: rgba(199, 243, 109, .08); font-size: .68rem; letter-spacing: .04em; }
+    .settings {
+      border-color: rgba(199, 243, 109, .2);
+      background: linear-gradient(145deg, rgba(7, 28, 35, .82), rgba(12, 42, 47, .8));
+      box-shadow: inset 0 1px rgba(255,255,255,.04), 0 14px 36px rgba(0,0,0,.12);
+    }
+    .rule-note { color: #f0e2c6; border-color: rgba(255, 212, 122, .28); background: rgba(255, 212, 122, .075); }
+    .number-pill { box-shadow: 0 0 22px rgba(199, 243, 109, .2); }
+    .segment[aria-pressed="true"] { box-shadow: inset 0 0 0 1px rgba(199, 243, 109, .08), 0 0 18px rgba(199, 243, 109, .08); }
+    .turn-banner { background: linear-gradient(100deg, rgba(9, 39, 42, .94), rgba(11, 33, 42, .82)); }
+    .hud-card { border-color: rgba(195, 237, 214, .16); background: rgba(5, 25, 33, .63); }
+    .hud-card .label { font-size: .68rem; letter-spacing: .025em; }
+    .hud-card strong { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .board-frame {
+      border-color: rgba(199, 243, 109, .2);
+      background:
+        linear-gradient(rgba(193, 232, 199, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(193, 232, 199, .035) 1px, transparent 1px),
+        radial-gradient(ellipse at center, rgba(31, 97, 73, .28), rgba(5, 29, 35, .5));
+      background-size: 24px 24px, 24px 24px, auto;
+    }
+    .board-hint { color: #c2d6ca; }
+    .balloon { min-width: 48px; }
+    .balloon[aria-pressed="true"] .orb { outline-color: #fff5c8; }
+    .quick-btn { background: rgba(7, 29, 37, .7); }
+    .quick-btn[aria-pressed="true"] { border-color: var(--mint); color: #102a23; background: var(--mint); }
+    .info-card, .policy-card { background: linear-gradient(150deg, rgba(17, 57, 61, .82), rgba(7, 32, 40, .86)); }
+    .info-icon { color: var(--mint); background: rgba(199, 243, 109, .12); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 900; }
+    .strategy-band { border-color: rgba(134, 202, 255, .24); background: linear-gradient(120deg, rgba(24, 66, 78, .62), rgba(12, 43, 49, .72)); }
+    .about-panel { background: linear-gradient(140deg, rgba(17, 58, 61, .72), rgba(7, 32, 40, .72)); }
+    .mute-control { border-color: rgba(199, 243, 109, .26); background: rgba(6, 27, 35, .94); }
+    .mute-control:focus-visible { outline-offset: 5px; }
+    @media (max-width: 840px) {
+      .hero-token--strategy { left: 3%; top: 11%; }
+      .hero-token--round { right: 3%; bottom: 12%; }
+    }
+    @media (max-width: 600px) {
+      .hero-token { min-height: 48px; padding: .5rem .66rem; gap: .5rem; border-radius: 13px; }
+      .hero-token--strategy { left: 1%; top: 8%; }
+      .hero-token--round { right: 0; bottom: 11%; }
+      .token-copy b { font-size: .65rem; }
+      .token-copy small { font-size: .61rem; }
+      .token-value { font-size: .9rem; }
+      .game-shell::after { inset: 6px; }
+    }
+    @media (max-width: 380px) {
+      .hero-token--strategy { top: 5%; left: 0; }
+      .hero-token--round { right: 0; bottom: 8%; }
+      .hero-token { transform: none; }
+      .token-copy small { display: none; }
+    }
+    /* Motion map: staged hero arrival → one-pass bloom → reveal as sections enter view → tactile input feedback. */
+    .hero-copy .eyebrow, .hero-copy h1, .hero-copy > p:not(.eyebrow), .hero-actions, .hero-proof {
+      animation: heroCopyEnter .64s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .hero-copy .eyebrow { animation-delay: .04s; }
+    .hero-copy h1 { animation-delay: .11s; }
+    .hero-copy > p:not(.eyebrow) { animation-delay: .2s; }
+    .hero-actions { animation-delay: .29s; }
+    .hero-proof { animation-delay: .37s; }
+    .hero-art-wrap { animation: heroArtEnter .82s cubic-bezier(.2, .8, .2, 1) .12s both; }
+    .hero-art-wrap .glow { animation: heroGlowBloom 1.05s cubic-bezier(.2, .8, .2, 1) .22s both; transform-origin: center; }
+    @keyframes heroCopyEnter {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroArtEnter {
+      from { opacity: 0; transform: translateY(10px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes heroGlowBloom {
+      from { opacity: 0; transform: scale(.84); }
+      65% { opacity: .78; }
+      to { opacity: 1; transform: scale(1); }
+    }
+    html.motion-ready .scroll-reveal {
+      opacity: 0;
+      transform: translateY(18px) scale(.99);
+      transition: opacity .58s cubic-bezier(.2, .8, .2, 1), transform .68s cubic-bezier(.2, .8, .2, 1);
+      transition-delay: calc(var(--reveal-order, 0) * 55ms);
+      will-change: transform, opacity;
+    }
+    html.motion-ready .scroll-reveal.is-visible { opacity: 1; transform: none; will-change: auto; }
+    .btn { transition: transform .32s var(--ease-pop), box-shadow .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease); }
+    .btn:active:not(:disabled) { transform: translateY(1px) scale(.94); transition-duration: .11s; transition-timing-function: cubic-bezier(.3, 0, .7, 1); }
+    .quick-btn { transition: transform .3s var(--ease-pop), color .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease); }
+    .quick-btn:active:not(:disabled), .segment:active { transform: scale(.94); transition-duration: .1s; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-copy .eyebrow, .hero-copy h1, .hero-copy > p:not(.eyebrow), .hero-actions, .hero-proof, .hero-art-wrap, .hero-art-wrap .glow { animation: none !important; }
+      html.motion-ready .scroll-reveal, html.motion-ready .scroll-reveal.is-visible { opacity: 1; transform: none; transition: none; will-change: auto; }
+      .btn, .quick-btn, .segment { transition: none !important; }
+    }
+    @media (min-width: 841px) and (max-height: 700px) {
+      .hero { min-height: 100svh; padding-block: 90px 28px; }
+      .hero-copy { padding-bottom: 0; }
+      .hero-copy h1 { font-size: clamp(2.8rem, 6.8vw, 5.2rem); margin-bottom: .8rem; }
+      .hero-copy > p:not(.eyebrow) { font-size: 1rem; margin-bottom: 1rem; }
+      .hero-proof { margin-top: .9rem; }
+      .hero-art-wrap { min-height: calc(100svh - 138px); }
+      .chameleon-svg { width: min(88%, 420px); }
+      .motion-hint { bottom: 0; }
+    }
+  </style>
+  <link rel="stylesheet" href="games.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Chameleon Arcade home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 29c1.5-9.7 11-16 21-13 6.4 1.9 9.2 7.1 8.5 12.2-.8 5.8-7.8 9-14.2 8.8-5.9-.2-10.4-2.7-15.3-8Z" fill="currentColor"/><circle cx="30" cy="17" r="8" fill="#f7ffe8"/><circle cx="32" cy="17" r="3.4" fill="#173d32"/><path d="M8 29c-6 4-5 9 0 10 4 1 7-3 4-6" stroke="#173d32" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+        <span class="brand-name">Chameleon <span style="color:var(--mint)">Arcade</span></span>
+      </a>
+      <button id="menuToggle" class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="navLinks">☰</button>
+      <nav id="navLinks" class="nav-links" aria-label="Main navigation">
+        <a href="#how-to-play">How to play</a>
+        <a href="#canopy-trials">Game suite</a>
+        <a href="#about">About</a>
+        <a href="#privacy">Privacy</a>
+        <a class="nav-cta" href="#game">Play now <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <svg id="heroOverlay" class="hero-overlay" aria-hidden="true"><path id="tonguePath"></path><circle id="tongueTip" r="8" cx="-20" cy="-20"></circle><circle id="impactRing" r="7" cx="-20" cy="-20"></circle></svg>
+      <div class="hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">A little jungle. A lot of strategy.</p>
+          <h1 id="hero-title">Pop smart.<br><span>Don't pop last.</span></h1>
+          <p>Start with a tiny game of balloon strategy, then enter the grove for six brutal algorithm challenges built to test every move.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#game">Play the game <span aria-hidden="true">→</span></a>
+            <a class="btn btn-secondary" href="#how-to-play">Learn the strategy</a>
+          </div>
+          <div class="hero-proof" aria-label="Game features">
+            <span><b>✦</b> Free to play</span><span><b>✦</b> Friend or AI</span><span><b>✦</b> No sign-up</span>
+          </div>
+        </div>
+        <div class="hero-art-wrap" id="heroArt" aria-label="Interactive chameleon. Press Enter or Space to make it flick its tongue." role="button" tabindex="0">
+          <div class="hero-orbit" aria-hidden="true"></div><div class="glow" aria-hidden="true"></div>
+          <i class="leaf leaf-a" aria-hidden="true"></i><i class="leaf leaf-b" aria-hidden="true"></i><i class="leaf leaf-c" aria-hidden="true"></i>
+          <i class="firefly f1" aria-hidden="true"></i><i class="firefly f2" aria-hidden="true"></i><i class="firefly f3" aria-hidden="true"></i>
+          <div class="hero-token hero-token--strategy" aria-hidden="true"><span class="token-value">5K+1</span><span class="token-copy"><b>Winning loop</b><small>leave one for them</small></span></div>
+          <div class="hero-token hero-token--round" aria-hidden="true"><span class="token-live"></span><span class="token-copy"><b>Quick rounds</b><small>1–4 pops per turn</small></span></div>
+          <svg class="chameleon-svg" id="chameleonArt" viewBox="0 0 470 350" role="presentation" aria-hidden="true">
+            <defs>
+              <linearGradient id="bodyGrad" x1="95" y1="100" x2="350" y2="300" gradientUnits="userSpaceOnUse"><stop stop-color="#d7f67b"/><stop offset=".42" stop-color="#85d760"/><stop offset="1" stop-color="#36a977"/></linearGradient>
+              <linearGradient id="bellyGrad" x1="150" y1="207" x2="353" y2="287" gradientUnits="userSpaceOnUse"><stop stop-color="#e6f69d"/><stop offset="1" stop-color="#86d999"/></linearGradient>
+              <linearGradient id="crestGrad" x1="186" y1="50" x2="295" y2="130"><stop stop-color="#dcf781"/><stop offset="1" stop-color="#79cf78"/></linearGradient>
+              <radialGradient id="eyeGrad" cx=".35" cy=".24"><stop stop-color="#fffde0"/><stop offset="1" stop-color="#b8e38b"/></radialGradient>
+              <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+            </defs>
+            <ellipse cx="243" cy="316" rx="150" ry="15" fill="#04221f" opacity=".36" filter="url(#soft)"/>
+            <path d="M51 271c67-18 135-19 210-3 58 12 105 13 154 1" fill="none" stroke="#9b703c" stroke-width="19" stroke-linecap="round"/>
+            <path d="M50 268c68-18 136-19 212-3 58 12 104 13 152 1" fill="none" stroke="#c69b59" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+            <g fill="#65b769" opacity=".8"><path d="M90 263c-39-36-47-68-28-85 27 20 40 46 40 77Z"/><path d="M355 263c27-45 58-57 75-42-9 30-33 49-66 58Z"/><path d="M149 269c-16-46-8-74 15-80 18 31 19 55 4 79Z"/></g>
+            <g class="cham-tail"><path d="M169 242c-51 36-106 31-106-3 0-27 41-36 62-16 14 14 1 32-15 28-8-2-10-10-5-14" fill="none" stroke="#45b978" stroke-width="28" stroke-linecap="round"/><path d="M169 242c-51 36-106 31-106-3 0-27 41-36 62-16 14 14 1 32-15 28-8-2-10-10-5-14" fill="none" stroke="#b4ea72" stroke-width="5" stroke-linecap="round" opacity=".55"/></g>
+            <g class="cham-body">
+              <path d="M142 244c-20-31-17-82 2-113 17-27 54-43 111-40 49 2 87 23 104 61 16 34 9 75-17 99-34 32-148 30-200-7Z" fill="url(#bodyGrad)"/>
+              <path d="M160 221c37 9 83 12 119 4 28-7 54-21 72-37 5 29-2 50-20 65-35 28-125 23-165-2-11-7-18-18-19-30Z" fill="url(#bellyGrad)" opacity=".95"/>
+              <path d="M162 173c21-38 68-55 123-42 18 4 32 13 43 25-36 2-49 23-53 47-38 10-73 9-107-2-13-4-17-14-6-28Z" fill="#6dca68" opacity=".54"/>
+              <path d="M169 136c-10-24-1-49 18-63 2 22 13 28 27 29 5-27 27-42 50-45-7 20-2 33 13 42 13-12 32-15 48-7-13 15-13 30-2 43-54-27-112-14-154 1Z" fill="url(#crestGrad)"/>
+              <path d="M194 117c23-17 53-25 82-19" fill="none" stroke="#f0ffb0" stroke-width="5" stroke-linecap="round" opacity=".58"/>
+              <path d="M219 200c29 9 55 9 81 1" fill="none" stroke="#287f65" stroke-width="4" stroke-linecap="round" opacity=".66"/>
+              <path d="M302 165c18-5 36-3 53 5 13 6 19 19 8 29-10 9-35 10-58 3-18-6-20-28-3-37Z" fill="#5bbc72"/>
+              <path d="M306 188c18 6 39 6 54 1" fill="none" stroke="#254f3e" stroke-width="3" stroke-linecap="round"/>
+              <g id="leftEye" class="eye-blink"><ellipse cx="232" cy="124" rx="28" ry="32" fill="url(#eyeGrad)"/><circle class="pupil" id="leftPupil" cx="237" cy="127" r="12" fill="#154a39"/><circle cx="241" cy="123" r="3.5" fill="#fff"/></g>
+              <g id="rightEye" class="eye-blink" style="animation-delay:.18s"><ellipse cx="291" cy="120" rx="26" ry="30" fill="url(#eyeGrad)"/><circle class="pupil" id="rightPupil" cx="296" cy="123" r="11" fill="#154a39"/><circle cx="300" cy="119" r="3.2" fill="#fff"/></g>
+              <ellipse cx="347" cy="177" rx="3.5" ry="2.3" fill="#317e60"/><ellipse cx="358" cy="178" rx="2.5" ry="1.8" fill="#317e60"/>
+              <path d="M176 181c-5 6-8 12-8 19" stroke="#d1f586" stroke-width="4" stroke-linecap="round" opacity=".68"/>
+              <circle cx="184" cy="223" r="6" fill="#d9f382" opacity=".7"/><circle cx="202" cy="233" r="4" fill="#53b875"/><circle cx="329" cy="218" r="5" fill="#d5f480" opacity=".8"/><circle cx="310" cy="231" r="3.5" fill="#46ad78"/>
+              <path d="M186 246c-4 10-14 15-24 15-8 0-12-6-9-12 4-8 15-9 23-3" fill="none" stroke="#e3f783" stroke-width="8" stroke-linecap="round"/>
+              <path d="M327 248c3 9 13 14 24 14 8 0 12-6 9-12-4-8-15-9-23-3" fill="none" stroke="#e3f783" stroke-width="8" stroke-linecap="round"/>
+            </g>
+            <circle id="mouthPoint" cx="348" cy="189" r="3" fill="#ff8b83" opacity=".01"/>
+          </svg>
+          <span class="motion-hint" aria-hidden="true">Click anywhere in the jungle to aim the tongue</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip" aria-label="Game details"><div class="wrap trust-inner"><span><i>✦</i> Seven jungle challenges</span><span><i>✦</i> Strategy AI</span><span><i>✦</i> No account needed</span><span><i>✦</i> Play in your browser</span></div></div>
+
+    <section class="content-section" id="game" aria-labelledby="game-title">
+      <div class="wrap">
+        <div class="section-head"><p class="eyebrow">The main event</p><h2 id="game-title">A tiny game of big decisions.</h2><p>Choose your challenge, take turns popping balloons, and try not to be the one who gets stuck with the last one.</p></div>
+        <div class="game-shell">
+          <div class="game-topline"><p class="eyebrow">Pop the Balloon</p><span class="game-badge"><span aria-hidden="true">●</span> Free browser game</span></div>
+          <div id="setupView" class="setup-view">
+            <div class="setup-grid">
+              <div class="setup-copy"><h2>Ready, set,<br>don't pop last.</h2><p>Take turns clearing the board. Every turn you must pop at least one balloon, and no more than four. The trick is knowing when to stop.</p><div class="rule-note"><span class="icon" aria-hidden="true">!</span><span><strong>Misère rule:</strong> whoever pops the final balloon loses the round. If only one is left, the player whose turn it is has to take it.</span></div></div>
+              <div class="settings" aria-label="New game settings">
+                <label class="field-label" id="modeLabel">Choose a mode</label>
+                <div class="segmented" role="group" aria-labelledby="modeLabel"><button type="button" class="segment" data-mode="local" aria-pressed="true">2 Players</button><button type="button" class="segment" data-mode="ai" aria-pressed="false">Play vs AI</button></div>
+                <div id="difficultyRow" class="difficulty-row" hidden><label class="field-label" for="difficulty">AI difficulty</label><div class="select-wrap"><select id="difficulty"><option value="easy">Easy — random moves</option><option value="hard" selected>Hard — plays the strategy</option></select></div></div>
+                <div class="setting-row"><div class="row-head"><label class="field-label" for="balloonCount" style="margin:0">Starting balloons</label><output class="number-pill" id="countOutput" for="balloonCount">18</output></div><input id="balloonCount" type="range" min="5" max="40" value="18" aria-label="Starting balloon count, 5 to 40"><div class="range-caption"><span>5</span><span>40</span></div></div>
+                <button id="startGame" class="btn btn-primary start-btn" type="button">Start game <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </div>
+          <div id="gameView" class="game-view" hidden>
+            <div id="turnBanner" class="turn-banner" data-player="1" aria-live="polite"><div><div class="turn-status"><span class="turn-dot" aria-hidden="true"></span><span id="turnText">Player 1's turn</span></div><div id="turnSub" class="turn-sub">Select 1–4 balloons, then pop.</div></div><span id="modeTag" class="game-badge">2 Players</span></div>
+            <div class="hud" aria-label="Game score">
+              <div class="hud-card"><span class="label">Player 1 popped</span><strong id="p1Score">0</strong></div>
+              <div class="hud-card remaining"><span class="label">Balloons remaining</span><strong id="remainingCount">18</strong></div>
+              <div class="hud-card player-two"><span class="label" id="p2Label">Player 2 popped</span><strong id="p2Score">0</strong></div>
+            </div>
+            <div class="board-frame"><p id="boardHint" class="board-hint">Choose up to four balloons. They will pop in the order you selected them.</p><div id="balloonBoard" class="balloon-board" role="group" aria-label="Balloons to pop"></div><div id="onlyOne" class="only-one" role="status">Only 1 balloon left… someone has to take it.</div></div>
+            <div class="controls-row"><div class="quick-select" aria-label="Quick select balloons"><span class="quick-label">Quick select</span><button class="quick-btn" type="button" data-quick="1" aria-label="Select 1 balloon">1</button><button class="quick-btn" type="button" data-quick="2" aria-label="Select 2 balloons">2</button><button class="quick-btn" type="button" data-quick="3" aria-label="Select 3 balloons">3</button><button class="quick-btn" type="button" data-quick="4" aria-label="Select 4 balloons">4</button></div><div class="action-group"><span class="selection-label"><strong id="selectedCount">0</strong> selected</span><button id="popButton" class="btn btn-primary" type="button" disabled>Pop! <span aria-hidden="true">✦</span></button></div></div>
+            <div class="game-bottom"><button id="hintButton" class="hint-btn" type="button">✧ Show strategy hint</button><button id="newGameButton" class="text-btn" type="button">New game</button></div><div id="hintBox" class="hint-box" role="status"></div>
+          </div>
+          <div class="sr-only" id="gameAnnouncer" aria-live="polite" aria-atomic="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="canopy-trials" aria-labelledby="trials-title">
+      <div class="wrap">
+        <div class="section-head suite-intro"><p class="eyebrow">The algorithm grove</p><h2 id="trials-title">Six more games. No soft landings.</h2><p>Outthink a Hex engine, sabotage a route the defender keeps solving, evolve a maze runner, and bend a living grid to your will. These trials run the algorithms for real — not just the animations.</p></div>
+        <div class="suite-shell">
+          <div class="suite-tabs" role="tablist" aria-label="Algorithm game challenges">
+            <button class="suite-tab" id="tabHex" role="tab" aria-selected="true" aria-controls="hexPanel" tabindex="0" data-game-select="hex">01 · Hex</button>
+            <button class="suite-tab" id="tabNetwork" role="tab" aria-selected="false" aria-controls="networkPanel" tabindex="-1" data-game-select="network">02 · Network Saboteur</button>
+            <button class="suite-tab" id="tabEvolution" role="tab" aria-selected="false" aria-controls="evolutionPanel" tabindex="-1" data-game-select="evolution">03 · Maze Runner</button>
+            <button class="suite-tab" id="tabArchitect" role="tab" aria-selected="false" aria-controls="architectPanel" tabindex="-1" data-game-select="architect">04 · Labyrinth</button>
+            <button class="suite-tab" id="tabOutbreak" role="tab" aria-selected="false" aria-controls="outbreakPanel" tabindex="-1" data-game-select="outbreak">05 · Outbreak</button>
+            <button class="suite-tab" id="tabCipher" role="tab" aria-selected="false" aria-controls="cipherPanel" tabindex="-1" data-game-select="cipher">06 · Spore Cipher</button>
+          </div>
+
+          <article class="suite-pane" id="hexPanel" role="tabpanel" aria-labelledby="tabHex" tabindex="0">
+            <div class="suite-pane-head"><div><p class="suite-kicker">Connection duel · 11 × 11</p><h3>Hex: cut the canopy</h3><p>Connect your two opposite borders before the other color does. There are no draws — every empty cell is a tactical threat.</p></div><span class="algo-badge">Minimax + alpha-beta</span></div>
+            <p class="suite-status" id="hexStatus" role="status" aria-live="polite" aria-atomic="true">Red moves first. Connect left to right.</p>
+            <div class="suite-toolbar">
+              <div class="suite-segment" id="hexMode" role="group" aria-label="Hex opponent mode"><button type="button" data-hex-mode="ai" aria-pressed="true">Vs Nightmare AI</button><button type="button" data-hex-mode="local" aria-pressed="false">Two players</button></div>
+              <label class="suite-control" for="hexDepth">AI depth <select id="hexDepth"><option value="2">Fast · 2 ply</option><option value="3">Brutal · 3 ply</option><option value="4" selected>Nightmare · 4 ply</option></select></label>
+              <span class="suite-chip">Moves played <strong id="hexMoveCount">0</strong></span><button class="btn btn-secondary" id="hexUndo" type="button" disabled>Undo turn</button><button class="btn btn-secondary" id="hexRedo" type="button" disabled>Redo turn</button><button class="btn btn-secondary" id="hexReset" type="button">Reset Hex</button>
+            </div>
+            <div class="suite-board-frame"><p class="suite-board-caption">Red connects left ↔ right · Blue connects top ↕ bottom</p><div id="hexBoard" class="hex-board" role="grid" aria-label="Hex game board, 11 rows by 11 columns"></div><div class="hex-legend" aria-label="Stone legend"><span><i class="hex-dot red" aria-hidden="true"></i>Red · left to right</span><span><i class="hex-dot blue" aria-hidden="true"></i>Blue · top to bottom</span></div></div>
+            <p class="suite-note">The opponent uses alpha-beta pruning with shortest-connection path costs. Nightmare searches four plies; the 2-ply setting is available for smaller screens.</p>
+          </article>
+
+          <article class="suite-pane" id="networkPanel" role="tabpanel" aria-labelledby="tabNetwork" tabindex="0" hidden>
+            <div class="suite-pane-head"><div><p class="suite-kicker">Constraint sabotage · 9 × 5 relay graph</p><h3>Network Saboteur</h3><p>Hit four capacity-3 relays on the lit route before delivery. The defender reroutes after each firewall; any placement that leaves no valid route is rejected.</p></div><span class="algo-badge">CSP · AC-3 · forward checking</span></div>
+            <p class="suite-status" id="networkStatus" role="status" aria-live="polite" aria-atomic="true">Select a relay ahead of the packet.</p>
+            <div class="suite-meta"><span class="suite-chip">Moves to delivery <strong id="networkTurns">8</strong></span><span class="suite-chip">Firewalls placed <strong id="networkBlockedCount">0</strong></span><span class="suite-chip">Critical relays hit <strong id="networkReroutes">0/4</strong></span></div>
+            <div class="suite-board-frame"><p class="suite-board-caption">Node badges show capacity (1–3). Select an unblocked future relay, then install one firewall.</p><div class="network-board" id="networkBoard" role="group" aria-label="Relay network; node badges show capacity. Select a relay node to firewall."></div></div>
+            <div class="suite-toolbar"><button class="btn btn-primary" id="networkFirewall" type="button">Install firewall</button><button class="btn btn-secondary" id="networkReset" type="button">Reset network</button></div>
+            <ol class="network-log" id="networkLog" aria-label="Route recalculation log"></ol>
+          </article>
+
+          <article class="suite-pane" id="evolutionPanel" role="tabpanel" aria-labelledby="tabEvolution" tabindex="0" hidden>
+            <div class="suite-pane-head"><div><p class="suite-kicker">Evolution under pressure · up to 120 generations</p><h3>Evolutionary Maze Runner</h3><p>You do not steer the creatures. Tune the population and mutation rate, then evolve sensor-response genomes until one finds the exit through the alternating gates.</p></div><span class="algo-badge">Tournament GA · crossover</span></div>
+            <p class="suite-status" id="gaStatus" role="status" aria-live="polite" aria-atomic="true">Population initialized. Press Evolve to start.</p>
+            <div class="suite-toolbar">
+              <label class="suite-control" for="gaPopulation">Population <input id="gaPopulation" type="range" min="24" max="72" step="8" value="48"><output id="gaPopulationValue">48</output></label>
+              <label class="suite-control" for="gaMutation">Mutation <input id="gaMutation" type="range" min="0.02" max="0.32" step="0.01" value="0.12"><output id="gaMutValue">12%</output></label>
+              <label class="suite-control" for="gaSpeed">Evolution speed <input id="gaSpeed" type="range" min="1" max="5" value="3"><output id="gaSpeedValue">3×</output></label>
+              <button class="btn btn-primary" id="gaStart" type="button">Evolve</button><button class="btn btn-secondary" id="gaReset" type="button">New population</button>
+            </div>
+            <div class="suite-meta"><span class="suite-chip">Generation <strong id="gaGeneration">0</strong></span><span class="suite-chip">Peak fitness <strong id="gaFitness">—</strong></span><span class="suite-chip">Mean fitness <strong id="gaAverage">—</strong></span></div>
+            <div class="suite-board-frame ga-stage"><canvas class="ga-canvas" id="gaCanvas" width="800" height="400" role="img" aria-label="Evolutionary maze simulation. Pale green paths are the current best; teal lines are other leading creatures.">Maze simulation canvas. The exit is to the right.</canvas><div class="ga-chart-wrap"><p class="ga-chart-label">Fitness history</p><canvas class="ga-chart" id="gaChart" width="800" height="250" role="img" aria-label="Chart of best and average creature fitness across generations.">Fitness chart.</canvas><div class="ga-key"><span><i aria-hidden="true"></i>Best</span><span><i aria-hidden="true"></i>Population average</span></div></div></div>
+            <p class="suite-note">Fitness rewards forward progress and survival; collisions stop a creature. The strongest two genomes survive each generation, while tournament-selected parents cross and mutate.</p>
+          </article>
+
+          <article class="suite-pane" id="architectPanel" role="tabpanel" aria-labelledby="tabArchitect" tabindex="0" hidden>
+            <div class="suite-pane-head"><div><p class="suite-kicker">Live path denial · 12 × 8 maze</p><h3>Dynamic Labyrinth Architect</h3><p>Spend a scarce wall budget to slow an A* runner. Every placement recalculates its best path; sealing the exit is forbidden, so you must waste its turns instead.</p></div><span class="algo-badge">A* · Manhattan heuristic</span></div>
+            <p class="suite-status" id="archStatus" role="status" aria-live="polite" aria-atomic="true">Place barriers and slowing moss, then advance the runner.</p>
+            <div class="suite-toolbar">
+              <div class="suite-segment" role="group" aria-label="Builder tile tool"><button type="button" data-arch-tool="wall" aria-pressed="true">Barrier · 2</button><button type="button" data-arch-tool="slow" aria-pressed="false">Slow moss · 1</button><button type="button" data-arch-tool="erase" aria-pressed="false">Erase</button></div>
+              <label class="suite-control"><input id="archDebug" type="checkbox"> Show A* open/closed</label>
+              <button class="btn btn-primary" id="archAdvance" type="button">Send runner</button><button class="btn btn-secondary" id="archReset" type="button">Reset maze</button>
+            </div>
+            <div class="suite-meta"><span class="suite-chip">Resources <strong id="archResources">18</strong></span><span class="suite-chip">Turns survived <strong id="archTurns">0</strong> / 30</span><span class="suite-chip">Current path <strong id="archPathLength">—</strong> steps</span><span class="suite-chip">Open / closed <strong id="archOpenCount">0</strong> / <strong id="archClosedCount">0</strong></span></div>
+            <div class="suite-board-frame"><p class="suite-board-caption">Keep the runner out of the exit for 30 advances. Walls cost 2; slow tiles cost 1.</p><div class="arch-board" id="archBoard" role="group" aria-label="Labyrinth grid; choose a cell to build on"></div><div class="arch-legend"><span>R · runner</span><span>E · exit</span><span>× · your wall</span><span>S · slow tile</span><span>Amber / blue outlines · A* sets</span></div></div>
+          </article>
+
+          <article class="suite-pane" id="outbreakPanel" role="tabpanel" aria-labelledby="tabOutbreak" tabindex="0" hidden>
+            <div class="suite-pane-head"><div><p class="suite-kicker">Two-faction automaton · 28 × 18</p><h3>Cellular Outbreak Grid</h3><p>Plant a tiny Orchid colony against Tide's seed cluster. Survival, energy, local majorities, and neighboring life decide which faction owns the canopy after 72 generations.</p></div><span class="algo-badge">Double-buffered cellular automata</span></div>
+            <p class="suite-status" id="outbreakStatus" role="status" aria-live="polite" aria-atomic="true">Place 3–12 Orchid spores on the grid. Tide seeds itself after you start.</p>
+            <div class="suite-toolbar"><button class="btn btn-primary" id="outbreakSeedButton" type="button" disabled>Start evolution</button><button class="btn btn-secondary" id="outbreakPlay" type="button" disabled>Run</button><button class="btn btn-secondary" id="outbreakStep" type="button" disabled>Step</button><button class="btn btn-secondary" id="outbreakReset" type="button">Reset grid</button></div>
+            <div class="outbreak-layout"><div class="suite-board-frame"><p class="suite-board-caption">Click to seed; with the grid focused, use arrow keys and Enter to place spores</p><canvas class="outbreak-canvas" id="outbreakCanvas" width="700" height="450" tabindex="0" role="application" aria-label="Cellular outbreak grid, 28 columns by 18 rows. Use arrow keys to move the seed cursor and Enter to plant an Orchid spore.">Interactive cellular grid. Orchid is coral; Tide is cyan.</canvas><p class="suite-note outbreak-cursor" id="outbreakCursor">Cursor: center</p></div><aside class="suite-sidecard"><h4>Territory telemetry</h4><div class="suite-meta"><span class="suite-chip">Generation <strong id="outbreakGen">0</strong> / 72</span><span class="suite-chip">Your seeds <strong id="outbreakSeedCount">0</strong> / 12</span></div><div class="territory-bar" role="img" aria-label="Faction territory balance"><span class="territory-red" id="territoryRed"></span><span class="territory-blue" id="territoryBlue"></span></div><div class="territory-counts"><span>Orchid <strong id="outbreakA">0</strong></span><span>Tide <strong id="outbreakB">0</strong></span></div><p class="suite-note">Living cells need energy. They survive on 2–3 neighbors, grow at exactly 3, and may convert under a decisive enemy majority.</p></aside></div>
+          </article>
+
+          <article class="suite-pane" id="cipherPanel" role="tabpanel" aria-labelledby="tabCipher" tabindex="0" hidden>
+            <div class="suite-pane-head"><div><p class="suite-kicker">Deduction challenge · 7 hues × 5 pegs</p><h3>Spore Cipher: break the code</h3><p>Infer a hidden five-spore sequence in ten turns. Repeats are allowed. Exact matches reveal the right slot; color matches reveal nothing about position.</p></div><span class="algo-badge">Information gain · minimax hint</span></div>
+            <p class="suite-status" id="cipherStatus" role="status" aria-live="polite" aria-atomic="true">A secret code is set. Duplicates are allowed.</p>
+            <div class="suite-meta"><span class="suite-chip">Guesses <strong id="cipherAttempts">0/10</strong></span><span class="suite-chip">Possible codes <strong id="cipherPossibilities">16,807</strong></span><span class="suite-chip">Difficulty · expert</span></div>
+            <div class="suite-board-frame"><p class="suite-board-caption">Choose a five-peg sequence. Color names are always shown alongside the swatches.</p><div class="cipher-pegs" id="cipherInputs" role="group" aria-label="Choose a five-color code">
+              <label for="cipherPeg1">Peg 1<select id="cipherPeg1" data-cipher-peg><option value="0">Lime</option><option value="1">Coral</option><option value="2">Sky</option><option value="3">Gold</option><option value="4">Violet</option><option value="5">Tide</option><option value="6">Moon</option></select></label>
+              <label for="cipherPeg2">Peg 2<select id="cipherPeg2" data-cipher-peg><option value="0">Lime</option><option value="1">Coral</option><option value="2">Sky</option><option value="3">Gold</option><option value="4">Violet</option><option value="5">Tide</option><option value="6">Moon</option></select></label>
+              <label for="cipherPeg3">Peg 3<select id="cipherPeg3" data-cipher-peg><option value="0">Lime</option><option value="1">Coral</option><option value="2">Sky</option><option value="3">Gold</option><option value="4">Violet</option><option value="5">Tide</option><option value="6">Moon</option></select></label>
+              <label for="cipherPeg4">Peg 4<select id="cipherPeg4" data-cipher-peg><option value="0">Lime</option><option value="1">Coral</option><option value="2">Sky</option><option value="3">Gold</option><option value="4">Violet</option><option value="5">Tide</option><option value="6">Moon</option></select></label>
+              <label for="cipherPeg5">Peg 5<select id="cipherPeg5" data-cipher-peg><option value="0">Lime</option><option value="1">Coral</option><option value="2">Sky</option><option value="3">Gold</option><option value="4">Violet</option><option value="5">Tide</option><option value="6">Moon</option></select></label>
+            </div><div class="suite-toolbar"><button class="btn btn-primary" id="cipherGuess" type="button">Lock in guess</button><button class="btn btn-secondary" id="cipherHint" type="button">Minimax hint</button><button class="btn btn-secondary" id="cipherReset" type="button">New secret code</button></div><div class="cipher-secret" id="cipherSecret" aria-label="Secret code reveal"></div><ol class="cipher-history" id="cipherHistory" role="log" aria-label="Previous guesses and feedback" aria-live="off"></ol></div>
+            <p class="suite-note">The hint scores sampled remaining codes by the size of their worst feedback bucket. It is intentionally not a giveaway — the puzzle still has up to 16,807 possible sequences.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="how-to-play" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head"><p class="eyebrow">The rules, nice and simple</p><h2 id="how-title">Your turn. Your choice. One last balloon.</h2><p>The game is easy to learn, but the winning pattern takes a little thought. Here’s how a round works.</p></div>
+        <div class="content-grid">
+          <article class="info-card"><div class="info-icon" aria-hidden="true">01</div><h3>Pick your opponent</h3><p>Play a local, turn-based match with a friend sharing your screen, or take on the chameleon. Hard AI follows the optimal pattern; Easy AI chooses a legal move at random.</p></article>
+          <article class="info-card"><div class="info-icon" aria-hidden="true">02</div><h3>Pop one to four</h3><p>On each turn, select at least one and at most four balloons. Tap a balloon to select it, tap again to undo, or use the quick-select buttons. Press <strong>Pop!</strong> to end your turn.</p></article>
+          <article class="info-card"><div class="info-icon" aria-hidden="true">03</div><h3>Avoid the final pop</h3><p>The player who removes the last balloon loses immediately. The other player wins. The final balloon is never a prize—if it’s your turn, you must pop it.</p></article>
+        </div>
+        <div class="strategy-band"><h3>A friendly hint: look for 5k + 1</h3><p>When it’s your turn, a count of 1, 6, 11, 16, 21, 26, 31, or 36 is a losing position if your opponent plays perfectly. From other counts, remove just enough balloons to leave one of those numbers behind. For example, from 18, take 2 and leave 16. Your opponent can take 1–4; you can answer with the number that makes the pair add up to 5. Keep returning the board to 5k + 1, and the other player eventually has to pop the last balloon. It’s a pattern, not a guarantee against every human move—but it’s a powerful place to start.</p><div class="strategy-steps" aria-label="Example winning counts"><div class="strategy-step"><b>1</b><span>leave this count</span></div><div class="strategy-step"><b>6</b><span>leave this count</span></div><div class="strategy-step"><b>11</b><span>leave this count</span></div><div class="strategy-step"><b>16</b><span>leave this count</span></div><div class="strategy-step"><b>21</b><span>leave this count</span></div></div><p class="small">These are 5k + 1 target counts. From 17, take 1 to leave 16; from 18, take 2; from 19, take 3; from 20, take 4. If your turn starts on a target count, there is no guaranteed winning move—take 1 and hope your opponent makes a mistake.</p></div>
+      </div>
+    </section>
+
+    <section class="content-section" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="about-panel"><div class="about-mark" aria-hidden="true"><svg viewBox="0 0 470 350"><defs><linearGradient id="aboutBody" x1="100" y1="80" x2="360" y2="280"><stop stop-color="#d7f67b"/><stop offset="1" stop-color="#36a977"/></linearGradient></defs><path d="M75 270c80-24 165-20 300-1" stroke="#bc9258" stroke-width="16" stroke-linecap="round"/><path d="M161 244c-50 35-105 30-105-3 0-27 41-36 61-16 13 14 0 31-15 27" fill="none" stroke="#45b978" stroke-width="26" stroke-linecap="round"/><path d="M144 244c-20-31-17-82 2-113 17-27 54-43 111-40 49 2 87 23 104 61 16 34 9 75-17 99-34 32-148 30-200-7Z" fill="url(#aboutBody)"/><path d="M180 137c-10-24-1-49 18-63 2 22 13 28 27 29 5-27 27-42 50-45-7 20-2 33 13 42 13-12 32-15 48-7-13 15-13 30-2 43-54-27-112-14-154 1Z" fill="#bce875"/><ellipse cx="232" cy="124" rx="28" ry="32" fill="#f8ffe3"/><ellipse cx="291" cy="120" rx="26" ry="30" fill="#f8ffe3"/><circle cx="237" cy="127" r="12" fill="#154a39"/><circle cx="296" cy="123" r="11" fill="#154a39"/><path d="M302 165c18-5 36-3 53 5 13 6 19 19 8 29-10 9-35 10-58 3-18-6-20-28-3-37Z" fill="#5bbc72"/><path d="M306 188c18 6 39 6 54 1" fill="none" stroke="#254f3e" stroke-width="3" stroke-linecap="round"/></svg></div><div class="about-copy"><p class="eyebrow">About Chameleon Arcade</p><h2 id="about-title">A bright little break for curious minds.</h2><p>Chameleon Arcade pairs its original misère Nim balloon game with six tougher algorithm trials: Hex, constrained network sabotage, evolutionary maze running, A-star labyrinth building, a cellular outbreak, and an expert code-breaker.</p><p>Play solo or share the screen where supported. Your move, seed, and puzzle state stays in the browser; no account or sign-up is needed.</p><p>The original game runs in your browser without an account. Audio preference and balloon-round totals stay on this device; the algorithm challenges do not require a profile or sign-in.</p></div></div>
+      </div>
+    </section>
+
+    <section class="content-section policy-section" id="privacy" aria-labelledby="privacy-title">
+      <div class="wrap">
+        <div class="section-head"><p class="eyebrow">Clear information</p><h2 id="privacy-title">Privacy policy</h2><p>Effective October 13, 2026. This notice describes the current Chameleon Arcade release and how its browser features work.</p></div>
+        <div class="policy-grid">
+          <article class="policy-card"><h3>Information and browser storage</h3><p>Chameleon Arcade does not ask you to create an account and does not collect your name, email address, or game choices through a site database. The game stores your mute preference and simple local round totals in your browser’s local storage so they can persist on that device. This information is not sent to the site as part of gameplay. You can clear it using your browser’s site-data controls.</p><p>Like most websites, the hosting provider may process basic request and security information (such as IP address, browser type, and request time) when delivering the page. The game itself does not use analytics or advertising tracking scripts in this release.</p></article>
+          <article class="policy-card"><h3>Advertising and cookies</h3><p>No advertising is currently displayed on this site, and no Google advertising code or advertising cookie is active in this release. If advertising is enabled in a future version, third-party vendors, including Google, may use cookies to serve ads based on a visitor’s prior visits to this site or other websites. Google’s use of advertising cookies enables it and its partners to serve ads based on visits to this site and/or other sites on the Internet.</p><p>Visitors can manage personalized advertising through <a href="https://adssettings.google.com/" rel="noopener noreferrer">Google Ads Settings</a> or opt out of some third-party personalized-advertising cookies at <a href="https://www.aboutads.info/" rel="noopener noreferrer">AboutAds.info</a>. Before ads are activated, the operator must update this notice with the vendors actually used and provide any consent experience required for the audience and applicable law.</p></article>
+          <article class="policy-card"><h3>Children and third-party services</h3><p>This is a general-audience casual game and has no account, messaging, or user-submitted-content features. Parents and guardians can supervise children’s use of the browser. The only outgoing links in this policy are to the named third-party privacy and advertising preference services; their own terms and privacy notices apply when you visit them.</p><p>We do not knowingly use this release to collect personal information from children. If a future feature changes how information is collected, this notice should be revised before that feature is launched.</p></article>
+          <article class="policy-card"><h3>Your choices and policy changes</h3><p>You may stop using the site at any time, disable local storage in your browser, or clear Chameleon Arcade’s saved site data. A browser setting that blocks storage may reset the mute setting and local round totals between visits, but it will not prevent the game from being played. This policy may be updated if the site’s technology, advertising partners, or legal obligations change. The effective date above will be revised when the text is updated.</p><p>For privacy questions or requests, contact the site operator using the contact details published with the operator’s website or publisher account.</p></article>
+        </div>
+        <div class="policy-note"><strong>Ad setup note:</strong> this site is currently ad-free. If the operator adds Google AdSense or another ad network, the operator must update the actual vendor disclosures, configure a suitable consent-management solution where required, and complete the provider’s account/site verification before ads are served.</div>
+      </div>
+    </section>
+
+    <section class="content-section policy-section" id="terms" aria-labelledby="terms-title">
+      <div class="wrap"><div class="section-head"><p class="eyebrow">Use of the site</p><h2 id="terms-title">Terms of use</h2><p>Simple rules for using this free browser game.</p></div><div class="policy-grid">
+        <article class="policy-card"><h3>Playing the game</h3><p>Chameleon Arcade is provided as a casual entertainment experience. You may play locally in your browser for personal, non-commercial use. Game scores are stored only in your browser and are not a formal record or guarantee of performance. The hard opponent follows a deterministic strategy and is not a human player.</p></article>
+        <article class="policy-card"><h3>Availability and acceptable use</h3><p>The site is provided “as available.” Do not use it to interfere with the site, its hosting, or other visitors. The operator may update, suspend, or remove the game or its features. External links are provided for convenience; the operator does not control third-party sites or their content.</p></article>
+        <article class="policy-card"><h3>Content and changes</h3><p>The original game name, copy, illustration, and interface elements are presented as part of Chameleon Arcade. These terms and the game may change over time. Continued use after an update means you accept the revised terms to the extent permitted by applicable law.</p></article>
+        <article class="policy-card"><h3>Questions</h3><p>For questions about these terms, use the contact details published by the site operator. Nothing in these terms limits rights that cannot be excluded under applicable law.</p></article>
+      </div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap"><div class="footer-inner"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">✦</span><span class="brand-name">Chameleon <span style="color:var(--mint)">Arcade</span></span></a><nav class="footer-links" aria-label="Footer navigation"><a href="#how-to-play">How to play</a><a href="#about">About</a><a href="#privacy">Privacy policy</a><a href="#terms">Terms of use</a></nav></div><p class="footer-copy">A free, friendly strategy game. No sign-up. No ads are currently served. © <span id="year">2026</span> Chameleon Arcade.</p></div></footer>
+
+  <button id="muteToggle" class="mute-control" type="button" aria-pressed="false" aria-label="Turn sound off"><span class="mute-icon" aria-hidden="true">♪</span><span id="muteLabel">Sound on</span></button>
+  <div id="gameOver" class="game-over" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultReason" aria-hidden="true">
+    <div class="modal-card"><div class="modal-mascot" aria-hidden="true"><svg viewBox="0 0 120 90"><path d="M22 69c13-20 39-28 72-13" fill="none" stroke="#bb8f59" stroke-width="6" stroke-linecap="round"/><path d="M41 62c-12-9-13-30-3-40 10-10 36-11 49 2 9 9 9 24 1 33-10 11-35 13-47 5Z" fill="#91da64"/><circle cx="66" cy="28" r="11" fill="#f5ffe4"/><circle cx="70" cy="29" r="4" fill="#164936"/><path d="M78 45c10-3 18 1 17 6-1 6-14 8-23 3" fill="#69c67a"/><path d="M36 61c-16 13-31 6-24-3 3-4 9-4 12 0" fill="none" stroke="#54be79" stroke-width="6" stroke-linecap="round"/></svg></div><p class="eyebrow">Round complete</p><h2 id="resultTitle">You win!</h2><p id="resultReason">Your opponent popped the last balloon.</p><div class="modal-actions"><button id="playAgain" class="btn btn-primary" type="button">Play again</button><button id="changeSettings" class="btn btn-secondary" type="button">Change settings</button></div></div>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (s, r=document) => r.querySelector(s);
+      const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+      const safeGet = (key, fallback) => { try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } };
+      const safeSet = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+      const state = { mode: 'local', difficulty: 'hard', initial: 18, remaining: [], player: 1, popped: [0, 0], selected: [], busy: false, started: false, mute: Boolean(safeGet('ca-mute', false)), audio: null, aiTimer: null };
+      const colors = [4, 32, 57, 89, 126, 153, 181, 209, 238, 270, 298, 326, 345];
+      const announcer = $('#gameAnnouncer');
+      const board = $('#balloonBoard');
+      const over = $('#gameOver');
+      const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let popSerial = 0;
+
+      $('#year').textContent = new Date().getFullYear();
+      $('#muteToggle').setAttribute('aria-pressed', String(state.mute));
+      function updateMuteUI() {
+        $('#muteToggle').setAttribute('aria-pressed', String(state.mute));
+        $('#muteToggle').setAttribute('aria-label', state.mute ? 'Turn sound on' : 'Turn sound off');
+        $('#muteLabel').textContent = state.mute ? 'Sound off' : 'Sound on';
+        $('.mute-icon').textContent = state.mute ? '♩' : '♪';
+      }
+      updateMuteUI();
+      if (!reducedMotion && 'IntersectionObserver' in window) {
+        const revealTargets = $$('.section-head, .info-card, .strategy-band, .about-panel, .policy-card');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -7% 0px', threshold: .12 });
+        document.documentElement.classList.add('motion-ready');
+        revealTargets.forEach((element, index) => {
+          element.classList.add('scroll-reveal');
+          element.style.setProperty('--reveal-order', String(index % 4));
+          revealObserver.observe(element);
+        });
+      }
+      $('#muteToggle').addEventListener('click', () => { state.mute = !state.mute; safeSet('ca-mute', state.mute); updateMuteUI(); if (!state.mute) playPopSound(.55); });
+
+      $('#menuToggle').addEventListener('click', () => {
+        const isOpen = $('#navLinks').classList.toggle('open');
+        $('#menuToggle').setAttribute('aria-expanded', String(isOpen));
+        $('#menuToggle').setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+        $('#menuToggle').textContent = isOpen ? '×' : '☰';
+      });
+      $$('#navLinks a').forEach(a => a.addEventListener('click', () => { $('#navLinks').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').textContent='☰'; }));
+
+      $$('.segment').forEach(btn => btn.addEventListener('click', () => {
+        state.mode = btn.dataset.mode;
+        $$('.segment').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+        $('#difficultyRow').hidden = state.mode !== 'ai';
+      }));
+      $('#difficulty').addEventListener('change', e => state.difficulty = e.target.value);
+      $('#balloonCount').addEventListener('input', e => { state.initial = Number(e.target.value); $('#countOutput').value = String(state.initial); $('#countOutput').textContent = String(state.initial); });
+      $('#startGame').addEventListener('click', () => startGame());
+      $('#newGameButton').addEventListener('click', () => { clearTimeout(state.aiTimer); $('#gameView').hidden = true; $('#setupView').hidden = false; state.started = false; $('#setupView').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'center'}); });
+      $('#playAgain').addEventListener('click', () => { closeGameOver(); startGame(); });
+      $('#changeSettings').addEventListener('click', () => { closeGameOver(); $('#gameView').hidden = true; $('#setupView').hidden = false; state.started=false; $('#setupView').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'center'}); $('#startGame').focus(); });
+      over.addEventListener('click', e => { if (e.target === over) closeGameOver(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && over.classList.contains('show')) closeGameOver(); });
+
+      function startGame() {
+        clearTimeout(state.aiTimer);
+        state.initial = Math.max(5, Math.min(40, Number($('#balloonCount').value) || 18));
+        state.difficulty = $('#difficulty').value;
+        state.remaining = Array.from({length: state.initial}, (_, i) => i + 1);
+        state.player = 1; state.popped = [0,0]; state.selected = []; state.busy = false; state.started = true;
+        $('#setupView').hidden = true; $('#gameView').hidden = false; $('#hintBox').classList.remove('show');
+        $('#p2Label').textContent = state.mode === 'ai' ? 'AI popped' : 'Player 2 popped';
+        $('#modeTag').textContent = state.mode === 'ai' ? `Vs AI · ${state.difficulty === 'hard' ? 'Hard' : 'Easy'}` : '2 Players';
+        renderBoard(); updateHud(); updateTurn(); announce(`Game started with ${state.initial} balloons. Player 1's turn.`);
+        $('#game').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'start'});
+        $('#balloonBoard').setAttribute('aria-label', `${state.remaining.length} balloons. Select one to four.`);
+      }
+      function renderBoard() {
+        board.innerHTML = '';
+        state.remaining.forEach((id, i) => {
+          const hue = colors[(id * 7 + i * 3) % colors.length];
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'balloon'; b.dataset.id = String(id); b.setAttribute('aria-pressed', String(state.selected.includes(id)));
+          b.setAttribute('aria-label', `Balloon ${id}${state.selected.includes(id) ? ', selected' : ''}`);
+          b.style.setProperty('--hue', String(hue)); b.style.setProperty('--bob', `${((id * 17) % 19) / 10}s`); b.style.setProperty('--scale', String(.92 + ((id * 11) % 16) / 100));
+          b.innerHTML = '<span class="orb" aria-hidden="true"></span><span class="string" aria-hidden="true"></span>';
+          b.addEventListener('click', () => toggleBalloon(id));
+          board.appendChild(b);
+        });
+        if (!state.remaining.length) board.innerHTML = '<p class="empty-board">The board is clear.</p>';
+        updateSelectionUI();
+      }
+      function toggleBalloon(id) {
+        if (state.busy || state.player === 2 && state.mode === 'ai') return;
+        if (state.selected.includes(id)) state.selected = state.selected.filter(x => x !== id);
+        else if (state.selected.length < Math.min(4, state.remaining.length)) state.selected = [...state.selected, id];
+        else { announce(`You can select up to ${Math.min(4, state.remaining.length)} balloons.`); return; }
+        updateSelectionUI();
+      }
+      function updateSelectionUI() {
+        $$('.balloon', board).forEach(b => {
+          const selected = state.selected.includes(Number(b.dataset.id));
+          b.setAttribute('aria-pressed', String(selected));
+          b.setAttribute('aria-label', `Balloon ${b.dataset.id}${selected ? ', selected' : ''}`);
+        });
+        $('#selectedCount').textContent = String(state.selected.length);
+        $('#popButton').disabled = state.selected.length < 1 || state.busy || (state.player === 2 && state.mode === 'ai');
+        $$('.quick-btn').forEach(b => b.disabled = state.busy || state.player === 2 && state.mode === 'ai' || Number(b.dataset.quick) > state.remaining.length);
+        $('#onlyOne').classList.toggle('show', state.remaining.length === 1 && !state.busy);
+      }
+      $$('.quick-btn').forEach(btn => btn.addEventListener('click', () => {
+        if (state.busy || (state.player === 2 && state.mode === 'ai')) return;
+        const count = Math.min(Number(btn.dataset.quick), state.remaining.length);
+        state.selected = state.remaining.slice(0, count); updateSelectionUI();
+        const first = $('.balloon', board); if (first) first.focus({preventScroll:true});
+      }));
+      $('#popButton').addEventListener('click', () => { if (!state.busy && state.selected.length) playTurn(state.selected.slice(), state.player, false); });
+      $('#hintButton').addEventListener('click', () => {
+        const n = state.remaining.length;
+        const take = optimalMove(n);
+        const next = n - take;
+        $('#hintBox').textContent = n % 5 === 1 ? `There is no move that guarantees a win from ${n}. Every legal move leaves your opponent a chance to return the board to 5k + 1. If you must play, take ${take} and hope for a mistake.` : `Try taking ${take}. That leaves ${next} balloon${next === 1 ? '' : 's'} (${next} = 5k + 1), a difficult position for the next player if they play perfectly.`;
+        $('#hintBox').classList.add('show');
+      });
+      function optimalMove(n) {
+        const r = n % 5;
+        if (r === 0) return Math.min(4,n);
+        if (r === 2) return Math.min(1,n);
+        if (r === 3) return Math.min(2,n);
+        if (r === 4) return Math.min(3,n);
+        return Math.min(1,n);
+      }
+      function randomMove(n) { return 1 + Math.floor(Math.random() * Math.min(4,n)); }
+      function updateHud() {
+        $('#remainingCount').textContent = String(state.remaining.length);
+        $('#p1Score').textContent = String(state.popped[0]); $('#p2Score').textContent = String(state.popped[1]);
+        $('#balloonBoard').setAttribute('aria-label', `${state.remaining.length} balloon${state.remaining.length === 1 ? '' : 's'} remaining. Select one to four.`);
+      }
+      function updateTurn(thinking=false) {
+        const banner = $('#turnBanner'); banner.dataset.player = String(state.player);
+        if (thinking) { $('#turnText').textContent = 'AI is thinking…'; $('#turnSub').textContent = 'The chameleon is choosing a move.'; }
+        else if (state.mode === 'ai' && state.player === 2) { $('#turnText').textContent = 'AI is playing'; $('#turnSub').textContent = 'The chameleon is making its move.'; }
+        else { $('#turnText').textContent = `Player ${state.player}'s turn`; $('#turnSub').textContent = `Select 1–${Math.min(4,state.remaining.length)} balloon${Math.min(4,state.remaining.length)===1?'':'s'}, then pop.`; }
+        updateSelectionUI();
+      }
+      function announce(message) { announcer.textContent = ''; window.setTimeout(() => { announcer.textContent = message; }, 25); }
+      function playPopSound(pitch=1) {
+        if (state.mute) return;
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext; if (!AudioCtx) return;
+          if (!state.audio) state.audio = new AudioCtx();
+          if (state.audio.state === 'suspended') state.audio.resume().catch(()=>{});
+          const ctx = state.audio, osc = ctx.createOscillator(), gain = ctx.createGain(), now = ctx.currentTime;
+          osc.type = 'sine'; osc.frequency.setValueAtTime(440 * pitch, now); osc.frequency.exponentialRampToValueAtTime(135 * pitch, now + .105);
+          gain.gain.setValueAtTime(.0001, now); gain.gain.exponentialRampToValueAtTime(.15, now + .008); gain.gain.exponentialRampToValueAtTime(.0001, now + .13);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + .14);
+        } catch {}
+      }
+      function playTurn(ids, player, isAI) {
+        if (state.busy || ids.length < 1 || ids.length > 4 || ids.length > state.remaining.length) return;
+        state.busy = true; state.selected = ids.slice(); updateSelectionUI();
+        $('#boardHint').textContent = isAI ? 'The chameleon is popping its choice…' : 'Pop sequence in progress…';
+        ids.forEach((id, i) => window.setTimeout(() => {
+          const el = $(`.balloon[data-id="${id}"]`, board);
+          if (el) { el.classList.add('popping'); playPopSound(.88 + Math.random() * .34); }
+        }, i * 105));
+        const wait = (ids.length - 1) * 105 + 430;
+        window.setTimeout(() => finishTurn(ids, player, isAI), wait);
+      }
+      function finishTurn(ids, player, isAI) {
+        state.remaining = state.remaining.filter(id => !ids.includes(id));
+        state.popped[player-1] += ids.length; state.selected = []; state.busy = false;
+        updateHud(); renderBoard();
+        announce(`${player === 2 && state.mode === 'ai' ? 'AI' : `Player ${player}`} popped ${ids.length}. ${state.remaining.length} balloons remain.`);
+        if (state.remaining.length === 0) { showResult(player); return; }
+        $('#boardHint').textContent = 'Choose up to four balloons. They will pop in the order you selected them.';
+        state.player = player === 1 ? 2 : 1;
+        if (state.mode === 'ai' && state.player === 2) {
+          updateTurn(true); announce('AI is thinking.');
+          const delay = state.difficulty === 'hard' ? 850 : 650;
+          state.aiTimer = window.setTimeout(() => {
+            if (!state.started || state.player !== 2) return;
+            const n = state.remaining.length;
+            const move = state.difficulty === 'hard' ? optimalMove(n) : randomMove(n);
+            playTurn(state.remaining.slice(0, Math.min(move,n)), 2, true);
+          }, delay);
+        } else updateTurn();
+      }
+      function showResult(loser) {
+        state.started = false; clearTimeout(state.aiTimer);
+        const winner = state.mode === 'ai' ? (loser === 1 ? 'AI wins!' : 'You win!') : `Player ${loser === 1 ? 2 : 1} wins!`;
+        const loserName = state.mode === 'ai' ? (loser === 1 ? 'You popped' : 'The AI popped') : `Player ${loser} popped`;
+        const winnerSentence = state.mode === 'ai' ? (loser === 1 ? 'the AI wins this round.' : 'you win this round.') : `Player ${loser === 1 ? 2 : 1} wins the round.`;
+        $('#resultTitle').textContent = winner;
+        $('#resultReason').textContent = `${loserName} the last balloon, so ${winnerSentence}`;
+        const stats = safeGet('ca-stats', {played:0, wins:0}); stats.played++; if (state.mode === 'ai' && loser === 2) stats.wins++; safeSet('ca-stats', stats);
+        over.classList.add('show'); over.setAttribute('aria-hidden','false'); $('#playAgain').focus();
+        announce(`${winner} ${loserName} the final balloon and lost.`);
+        if (!reducedMotion) launchConfetti();
+      }
+      function closeGameOver() { over.classList.remove('show'); over.setAttribute('aria-hidden','true'); }
+      function launchConfetti() {
+        const shades = ['#baf273','#ff9b7f','#86c9ff','#ffcf73','#c4a4ff','#f8f3d1'];
+        for (let i=0; i<48; i++) {
+          const c = document.createElement('i'); c.className = 'confetti'; c.style.left = `${Math.random()*100}vw`; c.style.background = shades[i%shades.length]; c.style.animationDelay = `${Math.random()*.5}s`; c.style.transform = `rotate(${Math.random()*180}deg)`; document.body.appendChild(c); window.setTimeout(()=>c.remove(), 2400);
+        }
+      }
+
+      // Pointer-reactive eyes and a short, retargetable tongue flick.
+      const hero = $('#top'), overlay = $('#heroOverlay'), tonguePath = $('#tonguePath'), tongueTip = $('#tongueTip'), ring = $('#impactRing');
+      let animFrame = 0, tongueState = null, ringFrame = 0;
+      function syncSvg() { const r=hero.getBoundingClientRect(); overlay.setAttribute('viewBox', `0 0 ${Math.max(1,r.width)} ${Math.max(1,r.height)}`); }
+      function moveEyes(clientX, clientY) {
+        const art = $('#chameleonArt').getBoundingClientRect();
+        const cx = art.left + art.width * .57, cy = art.top + art.height * .42;
+        const dx = Math.max(-5, Math.min(5, (clientX-cx)/22)), dy = Math.max(-4, Math.min(4, (clientY-cy)/24));
+        $('#leftPupil').setAttribute('transform', `translate(${dx} ${dy})`); $('#rightPupil').setAttribute('transform', `translate(${dx*.82} ${dy*.82})`);
+      }
+      hero.addEventListener('pointermove', e => { if (e.pointerType !== 'touch') moveEyes(e.clientX,e.clientY); });
+      $('#heroArt').addEventListener('keydown', e => {
+        if ((e.key !== 'Enter' && e.key !== ' ') || e.repeat) return;
+        e.preventDefault();
+        const r = $('#heroArt').getBoundingClientRect();
+        flick(r.left + r.width * .68, r.top + r.height * .48);
+      });
+      function ease(t) { return 1 - Math.pow(1-t,3); }
+      function quad(a,b,c,t) { const u=1-t; return {x:u*u*a.x+2*u*t*b.x+t*t*c.x,y:u*u*a.y+2*u*t*b.y+t*t*c.y}; }
+      function currentMouth() {
+        const m=$('#mouthPoint').getBoundingClientRect(), h=hero.getBoundingClientRect();
+        return {x:m.left+m.width/2-h.left,y:m.top+m.height/2-h.top};
+      }
+      function flick(x,y) {
+        if (reducedMotion) { popImpact(x,y); return; }
+        const rect=hero.getBoundingClientRect(), margin=10;
+        const target={x:Math.max(margin,Math.min(rect.width-margin,x-rect.left)),y:Math.max(margin,Math.min(rect.height-margin,y-rect.top))};
+        moveEyes(x,y);
+        const mouth=currentMouth();
+        if (tongueState && tongueState.phase !== 'idle') {
+          const p=tongueState.progress;
+          const base=tongueState.anchor || tongueState.mouth;
+          const old=quad(base,tongueState.control || base,tongueState.target,p);
+          tongueState.anchor=old; tongueState.mouth=mouth; tongueState.target=target; tongueState.progress=0; tongueState.phase='out'; tongueState.started=performance.now(); tongueState.duration=220;
+        } else { tongueState={mouth,anchor:null,target,progress:0,phase:'out',started:performance.now(),duration:330}; }
+        cancelAnimationFrame(animFrame); drawTongue();
+      }
+      function drawTongue() {
+        if (!tongueState) return;
+        const s=tongueState, now=performance.now(), t=Math.min(1,(now-s.started)/s.duration);
+        if (s.phase==='out') s.progress=ease(t);
+        else s.progress=1-ease(t);
+        const base=s.anchor || s.mouth;
+        const ctrl={x:(base.x+s.target.x)/2+8,y:(base.y+s.target.y)/2+Math.max(20,Math.abs(s.target.x-base.x)*.07)};
+        s.control=ctrl;
+        const tip=quad(base,ctrl,s.target,s.progress);
+        let d=`M ${s.mouth.x} ${s.mouth.y} `;
+        if (s.anchor) d+=`Q ${(s.mouth.x+s.anchor.x)/2-12} ${(s.mouth.y+s.anchor.y)/2+18} ${s.anchor.x} ${s.anchor.y} `;
+        d+=`Q ${ctrl.x} ${ctrl.y} ${tip.x} ${tip.y}`;
+        tonguePath.setAttribute('d',d); tongueTip.setAttribute('cx',tip.x); tongueTip.setAttribute('cy',tip.y);
+        if (s.phase==='out' && t>=1) { popImpact(tip.x+rectX(), tip.y+rectY()); s.phase='back'; s.started=now; s.duration=260; s.anchor=null; s.mouth=currentMouth(); s.target=tip; }
+        else if (s.phase==='back' && t>=1) { tonguePath.setAttribute('d',''); tongueTip.setAttribute('cx',-20); tongueTip.setAttribute('cy',-20); s.phase='idle'; return; }
+        animFrame=requestAnimationFrame(drawTongue);
+      }
+      function rectX(){ return hero.getBoundingClientRect().left; } function rectY(){ return hero.getBoundingClientRect().top; }
+      function popImpact(clientX, clientY) {
+        const h=hero.getBoundingClientRect(), x=clientX-h.left, y=clientY-h.top;
+        ring.setAttribute('cx',x); ring.setAttribute('cy',y); ring.setAttribute('r','4'); ring.style.opacity='1';
+        const start=performance.now(); cancelAnimationFrame(ringFrame);
+        const pulse=now=>{const p=Math.min(1,(now-start)/300);ring.setAttribute('r',String(4+30*p));ring.style.opacity=String(1-p);if(p<1)ringFrame=requestAnimationFrame(pulse);}; ringFrame=requestAnimationFrame(pulse);
+      }
+      hero.addEventListener('pointerdown', e => {
+        if (e.target.closest('a,button,input,select,nav')) return;
+        if (e.pointerType==='touch') e.preventDefault();
+        flick(e.clientX,e.clientY);
+      }, {passive:false});
+      window.addEventListener('resize',syncSvg,{passive:true}); syncSvg();
+    })();
+  </script>
+  <script src="games.js" defer></script>
+</body>
+</html>
