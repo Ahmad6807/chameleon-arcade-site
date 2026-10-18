@@ -1,0 +1,13 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const files=['index.html','games.js','games.css','app.js','app.css'];
+const types={html:'text/html; charset=utf-8',js:'application/javascript; charset=utf-8',css:'text/css; charset=utf-8'};
+const assets={};
+for(const name of files)assets['/'+name]={body:await readFile(name,'utf8'),type:types[name.split('.').pop()]};
+const wrapper=`import backend from './backend.js';
+import assets from './assets.js';
+const environments=new WeakMap();
+export default {fetch(request,env,ctx){let configured=environments.get(env);if(!configured){configured={...env,ASSETS:{async fetch(req){const url=new URL(req.url);const path=url.pathname==='/'?'/index.html':url.pathname;const asset=assets[path];if(!asset||!['GET','HEAD'].includes(req.method))return new Response('Not found',{status:404});return new Response(req.method==='HEAD'?null:asset.body,{headers:{'Content-Type':asset.type,'Cache-Control':'public, max-age=300'}});}}};environments.set(env,configured);}return backend.fetch(request,configured,ctx);}};`;
+const payload={modules:{'entry.js':wrapper,'backend.js':await readFile('worker/index.js','utf8'),'assets.js':'export default '+JSON.stringify(assets)+';'},migration:await readFile('migrations/001-initial.sql','utf8')};
+await mkdir('.deploy',{recursive:true});
+await writeFile('.deploy/payload.json',JSON.stringify(payload));
+console.log('Built .deploy/payload.json (allowlisted source and public assets only)');

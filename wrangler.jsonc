@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chameleon-arcade",
+  "main": "worker/index.js",
+  "account_id": "c2fbbf4f74ad3a07b96f52c4fbbc01cd",
+  "compatibility_date": "2026-10-18",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "vars": {
+    "APP_ORIGIN": "https://chameleon-arcade.broad-hippodraco.workers.dev"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "chameleon-arcade-production",
+    "database_id": "12e859d1-1d54-4e90-8b39-95e245b58604",
+    "migrations_dir": "migrations"
+  }]
+}

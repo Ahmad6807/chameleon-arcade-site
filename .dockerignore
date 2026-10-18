@@ -1,0 +1,15 @@
+*
+!package.json
+!package-lock.json
+!server
+!server/**
+!migrations
+!migrations/**
+!scripts
+!scripts/**
+!index.html
+!games.js
+!games.css
+!app.js
+!app.css
+!Dockerfile

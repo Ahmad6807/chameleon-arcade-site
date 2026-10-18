@@ -1,0 +1,11 @@
+import {createServer} from 'node:http';
+import {resolve} from 'node:path';
+import {mkdirSync} from 'node:fs';
+import {createApp} from './app.js';
+const production=process.env.NODE_ENV==='production';
+if(production && !process.env.DATA_DIR) throw new Error('Production requires explicit DATA_DIR');
+const dataDir=resolve(process.env.DATA_DIR||'./data'); mkdirSync(dataDir,{recursive:true});
+const {app,close}=createApp({dbPath:resolve(dataDir,'arcade.sqlite'),appOrigin:process.env.APP_ORIGIN||'http://localhost:3000',production});
+const server=createServer(app), port=Number(process.env.PORT||3000);
+server.listen(port,'0.0.0.0',()=>console.log(JSON.stringify({event:'listening',port})));
+const shutdown=()=>server.close(()=>{close();process.exit(0);});process.on('SIGTERM',shutdown);process.on('SIGINT',shutdown);

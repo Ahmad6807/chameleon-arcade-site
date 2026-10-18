@@ -531,6 +531,7 @@
     }
   </style>
   <link rel="stylesheet" href="games.css">
+  <link rel="stylesheet" href="app.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -544,6 +545,7 @@
       <nav id="navLinks" class="nav-links" aria-label="Main navigation">
         <a href="#how-to-play">How to play</a>
         <a href="#canopy-trials">Game suite</a>
+        <a href="#progress">Your trail</a>
         <a href="#about">About</a>
         <a href="#privacy">Privacy</a>
         <a class="nav-cta" href="#game">Play now <span aria-hidden="true">↗</span></a>
@@ -729,6 +731,8 @@
       </div>
     </section>
 
+    <section id="progress" class="content-section" aria-label="Your arcade trail"><div class="wrap" id="progressRoot"><p role="status">Loading your arcade trail… Gameplay works even if saved progress is unavailable.</p></div></section>
+
     <section class="content-section" id="how-to-play" aria-labelledby="how-title">
       <div class="wrap">
         <div class="section-head"><p class="eyebrow">The rules, nice and simple</p><h2 id="how-title">Your turn. Your choice. One last balloon.</h2><p>The game is easy to learn, but the winning pattern takes a little thought. Here’s how a round works.</p></div>
@@ -743,18 +747,18 @@
 
     <section class="content-section" id="about" aria-labelledby="about-title">
       <div class="wrap">
-        <div class="about-panel"><div class="about-mark" aria-hidden="true"><svg viewBox="0 0 470 350"><defs><linearGradient id="aboutBody" x1="100" y1="80" x2="360" y2="280"><stop stop-color="#d7f67b"/><stop offset="1" stop-color="#36a977"/></linearGradient></defs><path d="M75 270c80-24 165-20 300-1" stroke="#bc9258" stroke-width="16" stroke-linecap="round"/><path d="M161 244c-50 35-105 30-105-3 0-27 41-36 61-16 13 14 0 31-15 27" fill="none" stroke="#45b978" stroke-width="26" stroke-linecap="round"/><path d="M144 244c-20-31-17-82 2-113 17-27 54-43 111-40 49 2 87 23 104 61 16 34 9 75-17 99-34 32-148 30-200-7Z" fill="url(#aboutBody)"/><path d="M180 137c-10-24-1-49 18-63 2 22 13 28 27 29 5-27 27-42 50-45-7 20-2 33 13 42 13-12 32-15 48-7-13 15-13 30-2 43-54-27-112-14-154 1Z" fill="#bce875"/><ellipse cx="232" cy="124" rx="28" ry="32" fill="#f8ffe3"/><ellipse cx="291" cy="120" rx="26" ry="30" fill="#f8ffe3"/><circle cx="237" cy="127" r="12" fill="#154a39"/><circle cx="296" cy="123" r="11" fill="#154a39"/><path d="M302 165c18-5 36-3 53 5 13 6 19 19 8 29-10 9-35 10-58 3-18-6-20-28-3-37Z" fill="#5bbc72"/><path d="M306 188c18 6 39 6 54 1" fill="none" stroke="#254f3e" stroke-width="3" stroke-linecap="round"/></svg></div><div class="about-copy"><p class="eyebrow">About Chameleon Arcade</p><h2 id="about-title">A bright little break for curious minds.</h2><p>Chameleon Arcade pairs its original misère Nim balloon game with six tougher algorithm trials: Hex, constrained network sabotage, evolutionary maze running, A-star labyrinth building, a cellular outbreak, and an expert code-breaker.</p><p>Play solo or share the screen where supported. Your move, seed, and puzzle state stays in the browser; no account or sign-up is needed.</p><p>The original game runs in your browser without an account. Audio preference and balloon-round totals stay on this device; the algorithm challenges do not require a profile or sign-in.</p></div></div>
+        <div class="about-panel"><div class="about-mark" aria-hidden="true"><svg viewBox="0 0 470 350"><defs><linearGradient id="aboutBody" x1="100" y1="80" x2="360" y2="280"><stop stop-color="#d7f67b"/><stop offset="1" stop-color="#36a977"/></linearGradient></defs><path d="M75 270c80-24 165-20 300-1" stroke="#bc9258" stroke-width="16" stroke-linecap="round"/><path d="M161 244c-50 35-105 30-105-3 0-27 41-36 61-16 13 14 0 31-15 27" fill="none" stroke="#45b978" stroke-width="26" stroke-linecap="round"/><path d="M144 244c-20-31-17-82 2-113 17-27 54-43 111-40 49 2 87 23 104 61 16 34 9 75-17 99-34 32-148 30-200-7Z" fill="url(#aboutBody)"/><path d="M180 137c-10-24-1-49 18-63 2 22 13 28 27 29 5-27 27-42 50-45-7 20-2 33 13 42 13-12 32-15 48-7-13 15-13 30-2 43-54-27-112-14-154 1Z" fill="#bce875"/><ellipse cx="232" cy="124" rx="28" ry="32" fill="#f8ffe3"/><ellipse cx="291" cy="120" rx="26" ry="30" fill="#f8ffe3"/><circle cx="237" cy="127" r="12" fill="#154a39"/><circle cx="296" cy="123" r="11" fill="#154a39"/><path d="M302 165c18-5 36-3 53 5 13 6 19 19 8 29-10 9-35 10-58 3-18-6-20-28-3-37Z" fill="#5bbc72"/><path d="M306 188c18 6 39 6 54 1" fill="none" stroke="#254f3e" stroke-width="3" stroke-linecap="round"/></svg></div><div class="about-copy"><p class="eyebrow">About Chameleon Arcade</p><h2 id="about-title">A bright little break for curious minds.</h2><p>Chameleon Arcade pairs its original misère Nim balloon game with six tougher algorithm trials: Hex, constrained network sabotage, evolutionary maze running, A-star labyrinth building, a cellular outbreak, and an expert code-breaker.</p><p>Play solo or share the screen where supported. Games run in your browser; no account or sign-up is needed. Use Your trail to save a private checkpoint for any of the seven games on this server.</p><p>The original game runs in your browser without an account. A guest cookie connects this browser to your saved checkpoints, audio preference and practice history. There is no public leaderboard, profile, or cross-device account recovery.</p></div></div>
       </div>
     </section>
 
     <section class="content-section policy-section" id="privacy" aria-labelledby="privacy-title">
       <div class="wrap">
-        <div class="section-head"><p class="eyebrow">Clear information</p><h2 id="privacy-title">Privacy policy</h2><p>Effective October 13, 2026. This notice describes the current Chameleon Arcade release and how its browser features work.</p></div>
+        <div class="section-head"><p class="eyebrow">Clear information</p><h2 id="privacy-title">Privacy policy</h2><p>Effective October 18, 2026. This notice describes the current Chameleon Arcade release and how its browser features work.</p></div>
         <div class="policy-grid">
-          <article class="policy-card"><h3>Information and browser storage</h3><p>Chameleon Arcade does not ask you to create an account and does not collect your name, email address, or game choices through a site database. The game stores your mute preference and simple local round totals in your browser’s local storage so they can persist on that device. This information is not sent to the site as part of gameplay. You can clear it using your browser’s site-data controls.</p><p>Like most websites, the hosting provider may process basic request and security information (such as IP address, browser type, and request time) when delivering the page. The game itself does not use analytics or advertising tracking scripts in this release.</p></article>
+          <article class="policy-card"><h3>Information and browser storage</h3><p>Chameleon Arcade does not ask for your name or email. A necessary, HttpOnly guest cookie links this browser to a private server record for up to 30 days. Completed practice results and your audio preference are sent to the server; game checkpoints are sent only when you choose Save progress. The database stores these records and timestamps. Practice outcomes come from your browser and are not independently verified. Local storage keeps a fallback audio preference and legacy balloon totals. Use Delete all trail data below to remove the active guest’s server records. Clearing cookies alone removes access to those records, not the records themselves.</p><p>Like most websites, the hosting provider may process basic request and security information (such as IP address, browser type, and request time) when delivering the page. The game itself does not use analytics or advertising tracking scripts in this release.</p></article>
           <article class="policy-card"><h3>Advertising and cookies</h3><p>No advertising is currently displayed on this site, and no Google advertising code or advertising cookie is active in this release. If advertising is enabled in a future version, third-party vendors, including Google, may use cookies to serve ads based on a visitor’s prior visits to this site or other websites. Google’s use of advertising cookies enables it and its partners to serve ads based on visits to this site and/or other sites on the Internet.</p><p>Visitors can manage personalized advertising through <a href="https://adssettings.google.com/" rel="noopener noreferrer">Google Ads Settings</a> or opt out of some third-party personalized-advertising cookies at <a href="https://www.aboutads.info/" rel="noopener noreferrer">AboutAds.info</a>. Before ads are activated, the operator must update this notice with the vendors actually used and provide any consent experience required for the audience and applicable law.</p></article>
-          <article class="policy-card"><h3>Children and third-party services</h3><p>This is a general-audience casual game and has no account, messaging, or user-submitted-content features. Parents and guardians can supervise children’s use of the browser. The only outgoing links in this policy are to the named third-party privacy and advertising preference services; their own terms and privacy notices apply when you visit them.</p><p>We do not knowingly use this release to collect personal information from children. If a future feature changes how information is collected, this notice should be revised before that feature is launched.</p></article>
-          <article class="policy-card"><h3>Your choices and policy changes</h3><p>You may stop using the site at any time, disable local storage in your browser, or clear Chameleon Arcade’s saved site data. A browser setting that blocks storage may reset the mute setting and local round totals between visits, but it will not prevent the game from being played. This policy may be updated if the site’s technology, advertising partners, or legal obligations change. The effective date above will be revised when the text is updated.</p><p>For privacy questions or requests, contact the site operator using the contact details published with the operator’s website or publisher account.</p></article>
+          <article class="policy-card"><h3>Children and third-party services</h3><p>This is a general-audience casual game and has no account, messaging, or publicly shared user content. Saved game state is private guest data. Parents and guardians can supervise children’s use of the browser. The outgoing links in this policy are to the named third-party privacy and advertising preference services; their own terms and privacy notices apply when you visit them.</p><p>We do not knowingly use this release to collect personal information from children. If a future feature changes how information is collected, this notice should be revised before that feature is launched.</p></article>
+          <article class="policy-card"><h3>Your choices and policy changes</h3><p>You may stop using the site at any time, delete your server trail using the in-page control, disable local storage, or clear browser site data. Guest sessions expire after 30 days. The operator must maintain database retention and backup-deletion policies; backups may retain deleted data until rotation. A browser setting that blocks storage may reset the mute setting and local round totals between visits, but it will not prevent the game from being played. This policy may be updated if the site’s technology, advertising partners, or legal obligations change. The effective date above will be revised when the text is updated.</p><p>For privacy questions or requests, contact the site operator using the contact details published with the operator’s website or publisher account.</p></article>
         </div>
         <div class="policy-note"><strong>Ad setup note:</strong> this site is currently ad-free. If the operator adds Google AdSense or another ad network, the operator must update the actual vendor disclosures, configure a suitable consent-management solution where required, and complete the provider’s account/site verification before ads are served.</div>
       </div>
@@ -762,7 +766,7 @@
 
     <section class="content-section policy-section" id="terms" aria-labelledby="terms-title">
       <div class="wrap"><div class="section-head"><p class="eyebrow">Use of the site</p><h2 id="terms-title">Terms of use</h2><p>Simple rules for using this free browser game.</p></div><div class="policy-grid">
-        <article class="policy-card"><h3>Playing the game</h3><p>Chameleon Arcade is provided as a casual entertainment experience. You may play locally in your browser for personal, non-commercial use. Game scores are stored only in your browser and are not a formal record or guarantee of performance. The hard opponent follows a deterministic strategy and is not a human player.</p></article>
+        <article class="policy-card"><h3>Playing the game</h3><p>Chameleon Arcade is provided as a casual entertainment experience. You may play locally in your browser for personal, non-commercial use. Optional saved checkpoints and automatically recorded practice history are stored privately on the server for this browser’s guest session; they are not verified scores or a guarantee of performance. The hard opponent follows a deterministic strategy and is not a human player.</p></article>
         <article class="policy-card"><h3>Availability and acceptable use</h3><p>The site is provided “as available.” Do not use it to interfere with the site, its hosting, or other visitors. The operator may update, suspend, or remove the game or its features. External links are provided for convenience; the operator does not control third-party sites or their content.</p></article>
         <article class="policy-card"><h3>Content and changes</h3><p>The original game name, copy, illustration, and interface elements are presented as part of Chameleon Arcade. These terms and the game may change over time. Continued use after an update means you accept the revised terms to the extent permitted by applicable law.</p></article>
         <article class="policy-card"><h3>Questions</h3><p>For questions about these terms, use the contact details published by the site operator. Nothing in these terms limits rights that cannot be excluded under applicable law.</p></article>
@@ -790,7 +794,7 @@
       const board = $('#balloonBoard');
       const over = $('#gameOver');
       const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let popSerial = 0;
+      let popSerial = 0, roundEpoch = 0, returnFocus = null;
 
       $('#year').textContent = new Date().getFullYear();
       $('#muteToggle').setAttribute('aria-pressed', String(state.mute));
@@ -801,6 +805,7 @@
         $('.mute-icon').textContent = state.mute ? '♩' : '♪';
       }
       updateMuteUI();
+      window.addEventListener('arcade:preferences', e => { if (typeof e.detail?.mute === 'boolean') { state.mute = e.detail.mute; safeSet('ca-mute', state.mute); updateMuteUI(); } });
       if (!reducedMotion && 'IntersectionObserver' in window) {
         const revealTargets = $$('.section-head, .info-card, .strategy-band, .about-panel, .policy-card');
         const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -817,7 +822,7 @@
           revealObserver.observe(element);
         });
       }
-      $('#muteToggle').addEventListener('click', () => { state.mute = !state.mute; safeSet('ca-mute', state.mute); updateMuteUI(); if (!state.mute) playPopSound(.55); });
+      $('#muteToggle').addEventListener('click', () => { state.mute = !state.mute; safeSet('ca-mute', state.mute); updateMuteUI(); window.dispatchEvent(new CustomEvent('arcade:mute', {detail:{mute:state.mute}})); if (!state.mute) playPopSound(.55); });
 
       $('#menuToggle').addEventListener('click', () => {
         const isOpen = $('#navLinks').classList.toggle('open');
@@ -825,7 +830,7 @@
         $('#menuToggle').setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
         $('#menuToggle').textContent = isOpen ? '×' : '☰';
       });
-      $$('#navLinks a').forEach(a => a.addEventListener('click', () => { $('#navLinks').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').textContent='☰'; }));
+      $$('#navLinks a').forEach(a => a.addEventListener('click', () => { $('#navLinks').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').textContent='☰'; $('#menuToggle').setAttribute('aria-label','Open navigation'); }));
 
       $$('.segment').forEach(btn => btn.addEventListener('click', () => {
         state.mode = btn.dataset.mode;
@@ -835,14 +840,14 @@
       $('#difficulty').addEventListener('change', e => state.difficulty = e.target.value);
       $('#balloonCount').addEventListener('input', e => { state.initial = Number(e.target.value); $('#countOutput').value = String(state.initial); $('#countOutput').textContent = String(state.initial); });
       $('#startGame').addEventListener('click', () => startGame());
-      $('#newGameButton').addEventListener('click', () => { clearTimeout(state.aiTimer); $('#gameView').hidden = true; $('#setupView').hidden = false; state.started = false; $('#setupView').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'center'}); });
+      $('#newGameButton').addEventListener('click', () => { roundEpoch++; clearTimeout(state.aiTimer); $('#gameView').hidden = true; $('#setupView').hidden = false; state.started = false; $('#setupView').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'center'}); });
       $('#playAgain').addEventListener('click', () => { closeGameOver(); startGame(); });
       $('#changeSettings').addEventListener('click', () => { closeGameOver(); $('#gameView').hidden = true; $('#setupView').hidden = false; state.started=false; $('#setupView').scrollIntoView({behavior: reducedMotion ? 'auto':'smooth', block:'center'}); $('#startGame').focus(); });
       over.addEventListener('click', e => { if (e.target === over) closeGameOver(); });
       document.addEventListener('keydown', e => { if (e.key === 'Escape' && over.classList.contains('show')) closeGameOver(); });
 
       function startGame() {
-        clearTimeout(state.aiTimer);
+        roundEpoch++; clearTimeout(state.aiTimer);
         state.initial = Math.max(5, Math.min(40, Number($('#balloonCount').value) || 18));
         state.difficulty = $('#difficulty').value;
         state.remaining = Array.from({length: state.initial}, (_, i) => i + 1);
@@ -936,15 +941,17 @@
         } catch {}
       }
       function playTurn(ids, player, isAI) {
-        if (state.busy || ids.length < 1 || ids.length > 4 || ids.length > state.remaining.length) return;
+        if (!state.started || state.busy || ids.length < 1 || ids.length > 4 || ids.length > state.remaining.length) return;
+        const epoch = roundEpoch;
         state.busy = true; state.selected = ids.slice(); updateSelectionUI();
         $('#boardHint').textContent = isAI ? 'The chameleon is popping its choice…' : 'Pop sequence in progress…';
         ids.forEach((id, i) => window.setTimeout(() => {
+          if (epoch !== roundEpoch) return;
           const el = $(`.balloon[data-id="${id}"]`, board);
           if (el) { el.classList.add('popping'); playPopSound(.88 + Math.random() * .34); }
         }, i * 105));
         const wait = (ids.length - 1) * 105 + 430;
-        window.setTimeout(() => finishTurn(ids, player, isAI), wait);
+        window.setTimeout(() => { if (epoch === roundEpoch && state.started) finishTurn(ids, player, isAI); }, reducedMotion ? 0 : wait);
       }
       function finishTurn(ids, player, isAI) {
         state.remaining = state.remaining.filter(id => !ids.includes(id));
@@ -973,17 +980,40 @@
         $('#resultTitle').textContent = winner;
         $('#resultReason').textContent = `${loserName} the last balloon, so ${winnerSentence}`;
         const stats = safeGet('ca-stats', {played:0, wins:0}); stats.played++; if (state.mode === 'ai' && loser === 2) stats.wins++; safeSet('ca-stats', stats);
-        over.classList.add('show'); over.setAttribute('aria-hidden','false'); $('#playAgain').focus();
+        window.dispatchEvent(new CustomEvent('arcade:result', {detail:{game:'balloons',outcome:state.mode==='local'?'completed':loser===2?'win':'loss',details:{mode:state.mode,difficulty:state.difficulty,initial:state.initial,winner:3-loser}}}));
+        returnFocus = document.activeElement;
+        over.classList.add('show'); document.getElementById('main').inert = true; document.querySelector('.site-header')?.setAttribute('inert',''); over.setAttribute('aria-hidden','false'); $('#playAgain').focus();
         announce(`${winner} ${loserName} the final balloon and lost.`);
         if (!reducedMotion) launchConfetti();
       }
-      function closeGameOver() { over.classList.remove('show'); over.setAttribute('aria-hidden','true'); }
+      function closeGameOver() { over.classList.remove('show'); over.setAttribute('aria-hidden','true'); document.getElementById('main').inert = false; document.querySelector('.site-header')?.removeAttribute('inert'); if (returnFocus?.isConnected) returnFocus.focus(); }
+      over.addEventListener('keydown', e => { if (e.key !== 'Tab') return; const first=$('#playAgain'), last=$('#changeSettings'); if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();} });
       function launchConfetti() {
         const shades = ['#baf273','#ff9b7f','#86c9ff','#ffcf73','#c4a4ff','#f8f3d1'];
         for (let i=0; i<48; i++) {
           const c = document.createElement('i'); c.className = 'confetti'; c.style.left = `${Math.random()*100}vw`; c.style.background = shades[i%shades.length]; c.style.animationDelay = `${Math.random()*.5}s`; c.style.transform = `rotate(${Math.random()*180}deg)`; document.body.appendChild(c); window.setTimeout(()=>c.remove(), 2400);
         }
       }
+
+
+      window.ArcadeGames ||= {};
+      window.ArcadeGames.balloons = {
+        snapshot() {
+          if (!state.started || state.busy || (state.mode === 'ai' && state.player === 2)) throw new Error('Start a balloon round and wait for your turn before saving.');
+          return {version:1, mode:state.mode, difficulty:state.difficulty, initial:state.initial, remaining:state.remaining.slice(), player:state.player, popped:state.popped.slice()};
+        },
+        restore(s) {
+          const integer=(n,min,max)=>Number.isInteger(n)&&n>=min&&n<=max;
+          if (!s || s.version!==1 || !['local','ai'].includes(s.mode) || !['easy','hard'].includes(s.difficulty) || !integer(s.initial,5,40) || ![1,2].includes(s.player) || (s.mode==='ai'&&s.player!==1) || !Array.isArray(s.remaining) || !s.remaining.length || s.remaining.some(n=>!integer(n,1,s.initial)) || new Set(s.remaining).size!==s.remaining.length || !Array.isArray(s.popped) || s.popped.length!==2 || s.popped.some(n=>!integer(n,0,40)) || s.remaining.length+s.popped[0]+s.popped[1]!==s.initial) throw new Error('This balloon checkpoint is invalid. Start a new round.');
+          roundEpoch++; clearTimeout(state.aiTimer); closeGameOver();
+          Object.assign(state,{mode:s.mode,difficulty:s.difficulty,initial:s.initial,remaining:s.remaining.slice(),player:s.player,popped:s.popped.slice(),selected:[],busy:false,started:true});
+          $('#balloonCount').value=String(s.initial); $('#countOutput').value=String(s.initial); $('#countOutput').textContent=String(s.initial); $('#difficulty').value=s.difficulty; $('#difficultyRow').hidden=s.mode!=='ai';
+          $$('.segment').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===s.mode)));
+          $('#setupView').hidden=true; $('#gameView').hidden=false; $('#hintBox').classList.remove('show');
+          $('#p2Label').textContent=s.mode==='ai'?'AI popped':'Player 2 popped'; $('#modeTag').textContent=s.mode==='ai'?`Vs AI · ${s.difficulty==='hard'?'Hard':'Easy'}`:'2 Players';
+          renderBoard(); updateHud(); updateTurn(); announce('Saved balloon round restored. Your move.');
+        }
+      };
 
       // Pointer-reactive eyes and a short, retargetable tongue flick.
       const hero = $('#top'), overlay = $('#heroOverlay'), tonguePath = $('#tonguePath'), tongueTip = $('#tongueTip'), ring = $('#impactRing');
@@ -1055,5 +1085,6 @@
     })();
   </script>
   <script src="games.js" defer></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
